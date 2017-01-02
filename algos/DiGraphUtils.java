@@ -60,7 +60,78 @@ public class DiGraphUtils
     // If "return false" wasn't executed earlier, graph must be bipartite. Hence return true.
     return true;
   }
-
+  
+  public static boolean hasCycle(DiGraph dg)
+  {
+    int V = dg.V();
+    
+    boolean ret = false;
+    
+    boolean[] marked = new boolean[V];
+    initialize(marked, false);
+    
+    boolean[] inProcess = new boolean[V];
+    initialize(inProcess, false);
+   
+    for (int src=0; src<V; src++)
+    {
+      if(!marked[src])
+      {
+        inProcess[src] = true;
+        ret = hasCycle(dg, src, marked, inProcess);
+        inProcess[src] = false;
+        if(ret == true)
+        {
+          return true;
+        }
+      }
+    }
+    
+    return false;
+  }
+  
+  private static boolean hasCycle(DiGraph dg, int src, boolean[] marked, boolean[] inProcess)
+  {
+    boolean ret = false;
+    
+    marked[src] = true;
+    
+    for (int w: dg.adj(src))
+    {
+      if(inProcess[w] == true)
+      {
+        return true;
+      }
+      
+      if(!marked[w])
+      {
+        inProcess[w] = true;
+        ret = hasCycle(dg, marked, returned, w);
+        inProcess[w] = false;
+        
+        if(ret == true)
+        {
+          return true;
+        }
+      }
+    }
+  }
+  
+  private static void initialize(boolean[] arr, boolean value)
+  {
+    for (int i=0; i<arr.length; i++)
+    {
+      arr[i] = value;     
+    }
+  }
+  
+  private static void initialize(int[] arr, int value)
+  {
+    for(int i=0; i<arr.length; i++)
+    {
+      arr[i] = value;
+    }
+  }
 
   public static void main(String[] args) throws Exception
   {
