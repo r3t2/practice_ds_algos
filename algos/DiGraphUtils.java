@@ -1,3 +1,6 @@
+import java.util.Queue;
+import java.util.LinkedList;
+
 public class DiGraphUtils
 {
   
@@ -6,13 +9,14 @@ public class DiGraphUtils
   * Achieved by visiting every vertex once and check if adjacent vertices are of different type.
   * 
   */
-  public static boolean isBipartite (Digraph dg, int[] nodeType)
+  public static boolean isBipartite (DiGraph dg, int[] nodeType)
   {
     // V is the number of vertices in the digraph
     int V = dg.V();
+    int v;
     
     // marked[v] is true if the BFS visited vertex v
-    boolean marked[V];
+    boolean [] marked = new boolean[V];
     for (int i=0; i<V; i++)
     {
       marked[i] = false;
