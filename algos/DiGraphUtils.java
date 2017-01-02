@@ -1,5 +1,6 @@
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Arrays;
 
 public class DiGraphUtils
 {
@@ -58,6 +59,27 @@ public class DiGraphUtils
     
     // If "return false" wasn't executed earlier, graph must be bipartite. Hence return true.
     return true;
+  }
+
+
+  public static void main(String[] args) throws Exception
+  {
+    System.out.println("args = " + Arrays.toString(args));
+
+    if(args[0].equals("bipartite"))
+    {
+      DiGraph dg = new DiGraph(4);
+      dg.addEdge(0, 1);
+      dg.addEdge(1, 2);
+      dg.addEdge(2, 1);
+      dg.addEdge(1, 3);
+
+      int[] nodeTypeBipartite = {0, 1, 0, 0};
+      int[] nodeTypeNonBipartite = {0, 1, 1, 0};
+
+      System.out.println("expected = true, actual = " + isBipartite(dg, nodeTypeBipartite));
+      System.out.println("expected = false, actual = " + isBipartite(dg, nodeTypeNonBipartite));
+    }
   }
   
   
