@@ -72,7 +72,7 @@ public int E()
     
 public DiGraph reverse() throws Exception
 {
-    DiGrapgh dgReverse = new DiGraph(V);
+    DiGraph dgReverse = new DiGraph(V);
     
     for (int v=0; v < V; v++)
     {
@@ -119,6 +119,9 @@ public static void main(String[] args) throws Exception
     dg.addEdge(1, 3);
 
     System.out.println(dg);
+
+    DiGraph dgr = dg.reverse();
+    System.out.println(dgr);
 }
 
 }
