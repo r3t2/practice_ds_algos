@@ -22,10 +22,10 @@ public class DiGraph
     // number of vertices
     private final int V;
 
-//number of edges
+    //number of edges
     private int E;
 
-// maintain a collection of adjacent vertices
+    // maintain a collection of adjacent vertices
     private final Collection<Integer> [] adj;
 
     public DiGraph(int V) 
@@ -40,88 +40,88 @@ public class DiGraph
         E = 0;
     }
 
-/*
-Add edge from vertex v to vertex w.
-*/
-public void addEdge(int v, int w) throws Exception
-{
-    check(v); check(w);
-
-    adj[v].add(w);
-
-    E++;
-}
-
-/*
-Adjacent vertices to vertex v
-*/
-public Iterable<Integer> adj(int v) 
-{
-    return adj[v];
-}
-
-public int V()
-{
-    return V;
-}
-
-public int E()
-{
-    return E;
-}
-    
-public DiGraph reverse() throws Exception
-{
-    DiGraph dgReverse = new DiGraph(V);
-    
-    for (int v=0; v < V; v++)
+    /*
+    Add edge from vertex v to vertex w.
+    */
+    public void addEdge(int v, int w) throws Exception
     {
-        for (int w: adj[v])
-        {
-            dgReverse.addEdge(w, v);
-        }
-    }
-    
-    return dgReverse;
-    
-}
+        check(v); check(w);
 
-private void check(int  v) throws Exception
-{
-    if(v<0 || v>=V)
-        throw new IllegalArgumentException("v = "+ v);
-}
+        adj[v].add(w);
 
-public String toString()
-{
-    StringBuffer sb = new StringBuffer();
-    sb.append(V + "\n");
-    sb.append(E + "\n");
-
-    for (int v=0; v<V; v++)
-    {
-        for(int w: adj[v])
-        {
-            sb.append(v + " " + w + "\n");
-        }
+        E++;
     }
 
-    return sb.toString();
-}
+    /*
+    Adjacent vertices to vertex v
+    */
+    public Iterable<Integer> adj(int v) 
+    {
+        return adj[v];
+    }
 
-public static void main(String[] args) throws Exception
-{
+    public int V()
+    {
+        return V;
+    }
 
-    DiGraph dg = new DiGraph(4);
-    dg.addEdge(0, 1);
-    dg.addEdge(1, 2);
-    dg.addEdge(2, 1);
-    dg.addEdge(1, 3);
+    public int E()
+    {
+        return E;
+    }
 
-    System.out.println(dg);
+    public DiGraph reverse() throws Exception
+    {
+        DiGraph dgReverse = new DiGraph(V);
+        
+        for (int v=0; v < V; v++)
+        {
+            for (int w: adj[v])
+            {
+                dgReverse.addEdge(w, v);
+            }
+        }
+        
+        return dgReverse;
+        
+    }
 
-    DiGraph dgr = dg.reverse();
-    System.out.println(dgr);
-}
+    private void check(int  v) throws Exception
+    {
+        if(v<0 || v>=V)
+            throw new IllegalArgumentException("v = "+ v);
+    }
+
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append(V + "\n");
+        sb.append(E + "\n");
+
+        for (int v=0; v<V; v++)
+        {
+            for(int w: adj[v])
+            {
+                sb.append(v + " " + w + "\n");
+            }
+        }
+
+        return sb.toString();
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+
+        DiGraph dg = new DiGraph(4);
+        dg.addEdge(0, 1);
+        dg.addEdge(1, 2);
+        dg.addEdge(2, 1);
+        dg.addEdge(1, 3);
+
+        System.out.println(dg);
+
+        DiGraph dgr = dg.reverse();
+        System.out.println(dgr);
+    }
 
 }
