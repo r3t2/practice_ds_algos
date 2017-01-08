@@ -69,6 +69,22 @@ public int E()
 {
     return E;
 }
+    
+public DiGraph reverse()
+{
+    DiGrapgh dgReverse = new DiGraph(V);
+    
+    for (int v=0; v < V; v++)
+    {
+        for (int w: adj[v])
+        {
+            dgReverse.addEdge(w, v);
+        }
+    }
+    
+    return dgReverse;
+    
+}
 
 private void check(int  v) throws Exception
 {
