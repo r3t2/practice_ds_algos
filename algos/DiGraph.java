@@ -70,7 +70,7 @@ public int E()
     return E;
 }
     
-public DiGraph reverse()
+public DiGraph reverse() throws Exception
 {
     DiGrapgh dgReverse = new DiGraph(V);
     
