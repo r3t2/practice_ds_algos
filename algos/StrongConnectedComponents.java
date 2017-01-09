@@ -29,7 +29,7 @@ public class StrongConnectedComponents
   * Find topological order of dgr.
   * Run DFS on dg considering vertices in the topo order of dgr.
   */ 
-  public StrongConnectedComponents(DiGraph dg)
+  public StrongConnectedComponents(DiGraph dg) throws Exception
   {
   
     V = dg.V();
@@ -86,7 +86,7 @@ public class StrongConnectedComponents
   
   private <T> void initialize(T[] arr, T val)
   {
-    for (int i=0; i<T.length; i++)
+    for (int i=0; i<arr.length; i++)
     {
       arr[i] = val;
     }
