@@ -15,6 +15,9 @@ Iterable<Integer> adj(int v) -- Iterable object of vertices adjacent to the vert
 
 import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.File;
+import java.util.Arrays;
 
 
 public class DiGraph
@@ -26,18 +29,46 @@ public class DiGraph
     private int E;
 
     // maintain a collection of adjacent vertices
-    private final Collection<Integer> [] adj;
+    private Collection<Integer> [] adj;
 
     public DiGraph(int V) 
     {
         this.V = V;
+        E = 0;
+
+        init();
+    }
+
+    public DiGraph(Scanner sc) throws Exception
+    {
+        if (sc == null)
+        {
+            throw new NullPointerException("input scanner object is null. :(");
+        }
+
+        this.V = sc.nextInt();
+        int E_expected = sc.nextInt();
+
+        init();
+
+        for(int i=0; i<E_expected; i++)
+        {
+            addEdge(sc.nextInt(), sc.nextInt());
+        }
+
+        if(sc.hasNextInt())
+        {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void init()
+    {
         adj = (ArrayList<Integer> []) new ArrayList[V];
         for(int v=0; v<V; v++)
         {
             adj[v] = new ArrayList<Integer>();
         }
-
-        E = 0;
     }
 
     /*
@@ -111,17 +142,32 @@ public class DiGraph
 
     public static void main(String[] args) throws Exception
     {
+        System.out.println("args[] = " + Arrays.toString(args));
 
-        DiGraph dg = new DiGraph(4);
-        dg.addEdge(0, 1);
-        dg.addEdge(1, 2);
-        dg.addEdge(2, 1);
-        dg.addEdge(1, 3);
+        String CURRENT_DIR = System.getProperty("user.dir");
+
+        DiGraph dg;
+
+        if(args.length == 1)
+        {
+            System.out.println("CURRENT_DIR =  " + CURRENT_DIR);
+            dg = new DiGraph(new Scanner(new File( CURRENT_DIR + File.separator + args[0])));
+        }
+        else
+        {
+            dg = new DiGraph(4);
+            dg.addEdge(0, 1);
+            dg.addEdge(1, 2);
+            dg.addEdge(2, 1);
+            dg.addEdge(1, 3);
+        }
 
         System.out.println(dg);
 
         DiGraph dgr = dg.reverse();
         System.out.println(dgr);
+
+
     }
 
 }
