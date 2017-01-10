@@ -106,7 +106,7 @@ public class DiGraphUtils
       if(!marked[w])
       {
         inProcess[w] = true;
-        ret = hasCycle(dg, marked, returned, w);
+        ret = hasCycle(dg, w, marked, inProcess);
         inProcess[w] = false;
         
         if(ret == true)
@@ -115,6 +115,8 @@ public class DiGraphUtils
         }
       }
     }
+
+    return false;
   }
   
   private static void initialize(boolean[] arr, boolean value)
@@ -137,19 +139,31 @@ public class DiGraphUtils
   {
     System.out.println("args = " + Arrays.toString(args));
 
+    DiGraph dg = new DiGraph(5);
+    dg.addEdge(0, 1);
+    dg.addEdge(1, 2);
+    dg.addEdge(2, 4);
+    dg.addEdge(1, 3);
+    dg.addEdge(3, 2);
+
+
     if(args[0].equals("bipartite"))
     {
-      DiGraph dg = new DiGraph(4);
-      dg.addEdge(0, 1);
-      dg.addEdge(1, 2);
-      dg.addEdge(2, 1);
-      dg.addEdge(1, 3);
-
       int[] nodeTypeBipartite = {0, 1, 0, 0};
       int[] nodeTypeNonBipartite = {0, 1, 1, 0};
 
       System.out.println("expected = true, actual = " + isBipartite(dg, nodeTypeBipartite));
       System.out.println("expected = false, actual = " + isBipartite(dg, nodeTypeNonBipartite));
+    }
+
+    else if (args[0].equals("cycle"))
+    {
+
+      System.out.println("expected = false, actual = " + hasCycle(dg));
+      dg.addEdge(4, 1);
+      System.out.println("expected = true,  actual = " + hasCycle(dg));
+
+
     }
   }
   
