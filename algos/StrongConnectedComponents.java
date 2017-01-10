@@ -7,6 +7,9 @@
 */
 
 /* imports */
+import java.util.Arrays;
+import java.util.Scanner;
+import java.io.File;
 
 public class StrongConnectedComponents
 {
@@ -46,11 +49,16 @@ public class StrongConnectedComponents
     
     DepthFirstOrder dfOrder = new DepthFirstOrder(dgr);
     Iterable<Integer> topoOrder = dfOrder.reversePostOrder();
+
+    System.out.println("topo order = " + topoOrder);
     
     for(int v: topoOrder)
     {
-      dfs(dg, v);
-      numComponents++;
+    	if(!marked[v])
+    	{
+    		dfs(dg, v);
+      		numComponents++;
+    	}
     }
     
   }
@@ -90,6 +98,24 @@ public class StrongConnectedComponents
     {
       arr[i] = val;
     }
+  }
+
+
+  public static void main(String[] args) throws Exception
+  {
+  	System.out.println("args = " + Arrays.toString(args));
+
+  	DiGraph dg = new DiGraph(new Scanner(new File(args[0])));
+  	System.out.println(dg);
+
+  	StrongConnectedComponents scc = new StrongConnectedComponents(dg);
+  	
+  	System.out.println("num components = " + scc.numComponents());
+  	for(int v=0; v< dg.V(); v++)
+  	{
+  		System.out.println("v = " + v + ", c = " + scc.componentNum(v));
+  	}
+
   }
   
   
