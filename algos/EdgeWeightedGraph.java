@@ -17,6 +17,8 @@
 
 /* imports */
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Collection;
 
 public class EdgeWeightedGraph
 {
@@ -33,7 +35,7 @@ public class EdgeWeightedGraph
     
     this.V = V;
     
-    adj = (ArrayList<Edge>) ArrayList[V];
+    adj = (ArrayList<Edge> []) new ArrayList[V];
     for (int i=0; i<V; i++)
     {
       adj[i] = new ArrayList<Edge>();
@@ -48,25 +50,23 @@ public class EdgeWeightedGraph
     /* error checking */
     
     V = sc.nextInt();
-    E = sc.nextInt();
+    int E_expected = sc.nextInt();
     
-    EdgeWeightedGraph g = new EdgeWeightedGraph();
-    
-    for (int i=0; i<E; i++)
+    for (int i=0; i<E_expected; i++)
     {
-      g.addEdge(sc.nextInt(), sc.nextInt(), sc.nextDouble());
+      addEdge(sc.nextInt(), sc.nextInt(), sc.nextDouble());
     }
     
     /* if not EOF, then throw Exception*/
     
   }
   
-  public addEdge(int v, int w, double weight)
+  public void addEdge(int v, int w, double weight)
   {
     Edge e = new Edge(v, w, weight);
     
     adj[v].add(e);
-    addj[w].add(e);
+    adj[w].add(e);
     
     E++;
     
