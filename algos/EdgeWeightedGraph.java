@@ -19,6 +19,8 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Collection;
+import java.util.Arrays;
+import java.io.File;
 
 public class EdgeWeightedGraph
 {
@@ -35,11 +37,7 @@ public class EdgeWeightedGraph
     
     this.V = V;
     
-    adj = (ArrayList<Edge> []) new ArrayList[V];
-    for (int i=0; i<V; i++)
-    {
-      adj[i] = new ArrayList<Edge>();
-    }
+    init_adj(V);
     
     this.E = 0;    
     
@@ -51,6 +49,8 @@ public class EdgeWeightedGraph
     
     V = sc.nextInt();
     int E_expected = sc.nextInt();
+
+    init_adj(V);
     
     for (int i=0; i<E_expected; i++)
     {
@@ -59,6 +59,15 @@ public class EdgeWeightedGraph
     
     /* if not EOF, then throw Exception*/
     
+  }
+
+  private void init_adj(int V)
+  {
+    adj = (ArrayList<Edge> []) new ArrayList[V];
+    for (int i=0; i<V; i++)
+    {
+      adj[i] = new ArrayList<Edge>();
+    }
   }
   
   public void addEdge(int v, int w, double weight)
@@ -76,6 +85,23 @@ public class EdgeWeightedGraph
   {
     return adj[v];
   }
+
+  public String toString()
+  {
+    StringBuffer sb = new StringBuffer();
+
+    sb.append(V + "\n");
+    sb.append(E + "\n");
+    for (int i=0; i<V; i++)
+    {
+      for (Edge e : adj[i])
+      {
+        sb.append(e.toString() + "\n");
+      }
+    }
+
+    return sb.toString();
+  }
   
   public int V()
   {
@@ -85,5 +111,15 @@ public class EdgeWeightedGraph
   public int E()
   {
     return E;
+  }
+
+  public static void main(String [] args) throws Exception
+  {
+    System.out.println("args = " + Arrays.toString(args));
+
+    EdgeWeightedGraph ewg = new EdgeWeightedGraph(new Scanner(new File(args[0])));
+
+    System.out.println(ewg);
+
   }
 }

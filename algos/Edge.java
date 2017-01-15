@@ -38,6 +38,16 @@ public class Edge implements Comparable<Edge>
   return (v==this.v ? w : v) ;
   }
 
+  public double weight()
+  {
+    return weight;
+  } 
+
+  public String toString()
+  {
+    return v + ", " + w + ", " + weight;
+  }
+
   public int compareTo(Edge that)
   {
   if(this.weight < that.weight)
