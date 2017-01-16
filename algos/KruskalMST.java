@@ -11,18 +11,60 @@
 * 
 */
 
+/* imports */
+import java.util.Collections;
+import java.util.ArrayList;
+
 public class KruskalMST
 {
 
   // Union Find data structure to determine if two vertices are already connected
   UF isConn;
   
+  ArrayList<Edge> allEdges;
+  
+  ArrayList<Edge> mst;
+  
   
   public KruskalMST(EdgeWeightedGraph ewg)
   {
+    int V = ewg.V();
+    int E = ewg.E();
+    
+    int i, v, w;
+    
+    allEdges = new ArrayList<Edge> ();
+    
+    isConn = new UF(V);
+    
+    
+    for (i=0; i<V; i++)
+    {
+      for (Edge e: ewg.adj(i))
+      {
+        allEdges.add(e);
+      }
+    }
+    
+    Collections.sort(allEdges);
+    
+    
+    for (Edge e: allEdges)
+    {
+      v = e.either(); w = e.other(v);
+      
+      if(!uf.connected(v, w))
+      {
+        uf.union(v,w);
+        mst.add(e);
+      }
+    }
     
   }
   
-
-
+  public Iterable<Edges> edges()
+  {
+    return mst;
+  }
+  
 }
