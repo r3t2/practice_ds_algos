@@ -8,6 +8,11 @@
 * boolean find(int v, int w) -- is v connected to w
 */
 
+import java.util.Arrays;
+import java.util.Scanner;
+import java.io.File;
+
+
 public class UF
 {
   private int [] id;
@@ -34,9 +39,14 @@ public class UF
   {
     int rv = root(v);
     int rw = root(w);
+
+    if (rv == rw)
+    {
+      return;
+    }
     
-    int sv = size(rv);
-    int sw = size(rw);
+    int sv = size[rv];
+    int sw = size[rw];
     
     if(sv > sw)
     {
@@ -66,5 +76,36 @@ public class UF
     }
     
     return v;
+  }
+
+  public String toString()
+  {
+    StringBuffer sb = new StringBuffer();
+
+    sb.append(Arrays.toString(id) + "\n");
+    sb.append(Arrays.toString(size) );
+    return sb.toString();
+  }
+
+  public static void main(String [] args) throws Exception
+  {
+    System.out.println("args = " + Arrays.toString(args));
+
+    Scanner sc = new Scanner(new File(args[0]));
+    int N = sc.nextInt();
+    UF uf = new UF(N);
+
+    for (int i=0; i<N; i++)
+    {
+      uf.union(sc.nextInt(), sc.nextInt());
+    }
+
+    System.out.println(uf);
+
+    System.out.println(uf.find(0,2));
+    System.out.println(uf.find(0,4));
+    System.out.println(uf.find(9,3));
+    System.out.println(uf.find(7,4));
+    
   }
 }
