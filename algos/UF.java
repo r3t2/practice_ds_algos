@@ -5,7 +5,7 @@
 * UF(int N) -- N is the number of objects
 *
 * void union(int v, int w) -- connect v with w
-* boolean find(int v, int w) -- is v connected to w
+* boolean connected(int v, int w) -- is v connected to w
 */
 
 import java.util.Arrays;
@@ -60,7 +60,7 @@ public class UF
     }    
   }
   
-  public boolean find(int v, int w)
+  public boolean connected(int v, int w)
   {
     return (root(v) == root(w));
   }
@@ -102,10 +102,10 @@ public class UF
 
     System.out.println(uf);
 
-    System.out.println(uf.find(0,2));
-    System.out.println(uf.find(0,4));
-    System.out.println(uf.find(9,3));
-    System.out.println(uf.find(7,4));
+    System.out.println(uf.connected(0,2));
+    System.out.println(uf.connected(0,4));
+    System.out.println(uf.connected(9,3));
+    System.out.println(uf.connected(7,4));
     
   }
 }
