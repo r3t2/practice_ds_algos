@@ -14,6 +14,9 @@
 /* imports */
 import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.io.File;
 
 public class KruskalMST
 {
@@ -34,6 +37,7 @@ public class KruskalMST
     int i, v, w;
     
     allEdges = new ArrayList<Edge> ();
+    mst = new ArrayList<Edge> ();
     
     isConn = new UF(V);
     
@@ -53,18 +57,33 @@ public class KruskalMST
     {
       v = e.either(); w = e.other(v);
       
-      if(!uf.connected(v, w))
+      if(!isConn.connected(v, w))
       {
-        uf.union(v,w);
+        isConn.union(v,w);
         mst.add(e);
       }
     }
     
   }
   
-  public Iterable<Edges> edges()
+  public Iterable<Edge> edges()
   {
     return mst;
   }
   
+  public static void main(String[] args) throws Exception
+  {
+    System.out.println("args = " + Arrays.toString(args));
+    EdgeWeightedGraph ewg = new EdgeWeightedGraph(new Scanner(new File(args[0])));
+
+    System.out.println(ewg);
+
+    KruskalMST kmst = new KruskalMST(ewg);
+
+    System.out.println("MST::");
+    for (Edge e: kmst.edges())
+    {
+      System.out.println(e);
+    }
+  }
 }
