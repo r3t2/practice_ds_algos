@@ -21,7 +21,7 @@ public class Edge implements Comparable<Edge>
  
  private int w;
  
- public Edge(int v, int w, weight)
+ public Edge(int v, int w, double weight)
  {
   this.v = v;
   this.w = w;
