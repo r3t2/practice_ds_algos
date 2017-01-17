@@ -19,6 +19,8 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Collection;
+import java.util.Arrays;
+import java.io.File;
 
 public class EdgeWeightedGraph
 {
@@ -83,6 +85,23 @@ public class EdgeWeightedGraph
   {
     return adj[v];
   }
+
+  public String toString()
+  {
+    StringBuffer sb = new StringBuffer();
+
+    sb.append(V + "\n");
+    sb.append(E + "\n");
+    for (int i=0; i<V; i++)
+    {
+      for (Edge e : adj[i])
+      {
+        sb.append(e.toString() + "\n");
+      }
+    }
+
+    return sb.toString();
+  }
   
   public int V()
   {
@@ -92,5 +111,15 @@ public class EdgeWeightedGraph
   public int E()
   {
     return E;
+  }
+
+  public static void main(String [] args) throws Exception
+  {
+    System.out.println("args = " + Arrays.toString(args));
+
+    EdgeWeightedGraph ewg = new EdgeWeightedGraph(new Scanner(new File(args[0])));
+
+    System.out.println(ewg);
+
   }
 }
