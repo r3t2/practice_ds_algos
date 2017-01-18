@@ -21,9 +21,9 @@ public class SocialNetworkConnectivity
   private int m;
   private int minConnectTime;
   
-  public class SocialNetworkConnectivity(String logFile) throws Exception
+  public SocialNetworkConnectivity(String logFile) throws Exception
   {
-    Scanner sc = new Scanner(new File(logFile)));
+    Scanner sc = new Scanner(new File(logFile));
     
     n = sc.nextInt();
     m = sc.nextInt();
@@ -34,7 +34,7 @@ public class SocialNetworkConnectivity
     uf.union(n, 0);
     uf.union(n+1, n-1);
     
-    int i, j, t;
+    int i, j, t = -1;
     
     while( (uf.connected(n, n+1) == false) & sc.hasNextInt())
     {
@@ -44,9 +44,13 @@ public class SocialNetworkConnectivity
     }
     
     if(uf.connected(n, n+1))
+    {
       minConnectTime = t;
+    }
     else
+    {
       minConnectTime = -1;
+    }
     
   }
   
@@ -91,13 +95,15 @@ public class SocialNetworkConnectivity
       }
     }
     
-    private void root(int i)
+    private int root(int i)
     {
       while(id[i] != i)
       {
         id[i] = id[id[i]];
         i = id[i];
       }
+
+      return i;
     }
     
     private boolean connected(int i, int j)
