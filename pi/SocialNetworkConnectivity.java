@@ -10,6 +10,10 @@
 * i j t (m times)
 */
 
+import java.util.Scanner;
+import java.io.File;
+
+
 public class SocialNetworkConnectivity
 {
   private UF uf;
@@ -51,6 +55,7 @@ public class SocialNetworkConnectivity
     return minConnectTime;
   }
   
+  /* only for practice. Ideally use the one from algos dir */
   public class UF
   {
     private int[] id;
@@ -67,6 +72,7 @@ public class SocialNetworkConnectivity
         size[i] = 1;
       }
     }
+    
     
     public void union(int i, int j)
     {
