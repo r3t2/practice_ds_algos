@@ -13,13 +13,13 @@
 */
 
 /* imports */
-public class MinPQ<Key implements Comparable<Key>>
+public class MinPQ<Key extends Comparable<Key>>
 {
   /*fields*/
-  
-  private Comparable<Key> [] keys;
+
+  private Key [] keys;
   private int size;
-  
+
   public MinPQ(int capacity)
   {
     /* error checking */
@@ -28,19 +28,20 @@ public class MinPQ<Key implements Comparable<Key>>
     keys = (Key []) new Comparable[capacity+1];
     size = 0;
   }
-  
+
   public void insert(Key key) throws Exception
   {
     if(size == (keys.length-1))
       resize();
- 
-    keys[size+1] = key;
+
     size++;
+    keys[size] = key;
+    
     
     swim(size);
     
   }
-  
+
   private void swim(int i)
   {
     if (i==1)
@@ -55,13 +56,13 @@ public class MinPQ<Key implements Comparable<Key>>
       swim(p);
     }
     
-   }
-   
-   private void sink(int p)
-   {
+  }
+
+  private void sink(int p)
+  {
     if(p>size)
       return;
-      
+
     int c0 = 2*p, c1 = 2*p+1;
     int c = -1;
     if (c1 < size)
@@ -80,21 +81,22 @@ public class MinPQ<Key implements Comparable<Key>>
         exch(p, c);
         sink(c);
       }
-    
-   }
-   
-   private exch(int i, int j)
-   {
+
+    }
+  }
+
+  private void exch(int i, int j)
+  {
     Key temp = keys[i];
     keys[i] = keys[j];
     keys[j] = temp;
-   }
-   
+  }
 
-  
+
+
   private void resize()
   {
-    throw new OperationNotSupportedException();
+    throw new UnsupportedOperationException();
   }
-  
+
 }
