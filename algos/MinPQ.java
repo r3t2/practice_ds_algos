@@ -13,6 +13,8 @@
 */
 
 /* imports */
+import java.util.Arrays;
+
 public class MinPQ<Key extends Comparable<Key>>
 {
   /*fields*/
@@ -42,6 +44,39 @@ public class MinPQ<Key extends Comparable<Key>>
     
   }
 
+  public Key min()
+  {
+    if(size==0)
+      return null;
+    else
+      return keys[1];
+  }
+
+  public Key delMin()
+  {
+    Key min = null;
+
+    if(size == 0)
+    {
+      min = null;
+    }
+    else
+    {
+      min = keys[1];
+      keys[1] = keys[size];
+      keys[size] = null;
+      size--;
+    }
+    
+    if(size>0)
+    {
+      sink(1);
+    }
+
+    return min;
+
+  }
+
   private void swim(int i)
   {
     if (i==1)
@@ -56,6 +91,11 @@ public class MinPQ<Key extends Comparable<Key>>
       swim(p);
     }
     
+  }
+
+  public boolean isEmpty()
+  {
+    return (size==0);
   }
 
   private void sink(int p)
@@ -97,6 +137,29 @@ public class MinPQ<Key extends Comparable<Key>>
   private void resize()
   {
     throw new UnsupportedOperationException();
+  }
+
+  public String toString()
+  {
+    return "size = " + size + "\n" + Arrays.toString(keys);
+  }
+
+  public static void main(String[] args) throws Exception
+  {
+    MinPQ<Integer> pq = new MinPQ<Integer>(10);
+    pq.insert(5);
+    pq.insert(4);
+    pq.insert(2);
+    pq.insert(7);
+    pq.insert(1);
+    pq.insert(9);
+
+    System.out.println("pq = " + pq);
+    System.out.println("min = " + pq.delMin());
+    System.out.println("min = " + pq.delMin());
+    System.out.println("min = " + pq.delMin());
+    System.out.println("min = " + pq.delMin());
+    System.out.println("pq = " + pq);
   }
 
 }
