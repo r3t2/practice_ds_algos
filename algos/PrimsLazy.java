@@ -8,6 +8,7 @@
 
 /* imports */
 import java.util.PriorityQueue;
+import java.util.ArrayList;
 
 
 public class PrimsLazy
@@ -17,6 +18,7 @@ public class PrimsLazy
   
   private UF uf;
   private PriorityQueue<Edge> pq;
+  private ArrayList<Edge> mstEdges;
   
   
   
@@ -28,6 +30,13 @@ public class PrimsLazy
     
     uf = new UF(V);
     pq = new PriorityQueue<Edge> ();
+    
+    mstEdges = new ArrayList<Edge> ();
+    
+  }
+  
+  private void mst(int )
+  {
     
   }
   
