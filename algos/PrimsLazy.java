@@ -19,6 +19,7 @@ public class PrimsLazy
   private UF uf;
   private PriorityQueue<Edge> pq;
   private ArrayList<Edge> mstEdges;
+  private boolean [] marked;
   
   
   
@@ -26,18 +27,38 @@ public class PrimsLazy
   {
   
     V = ewg.V();
-    E = ewg.E();
+    
+    marked = new boolean[V];
+    for (int i=0; i<V; i++)
+    {
+      marked[i] = false;
+    }
     
     uf = new UF(V);
     pq = new PriorityQueue<Edge> ();
     
     mstEdges = new ArrayList<Edge> ();
     
+    for(int i=0; i<V; i++)
+    {
+      if(!marked[i])
+      {
+        mst(ewg, i);
+      }
+    }
+    
   }
   
-  private void mst(int )
+  
+  private void mst(EdgeWeightedGraph ewg, int v)
   {
+    int w;
     
+    for(Edge e: ewg.adj(v))
+    {
+      w = e.other(v);
+      
+    }
   }
   
   public Iterable<Edge> edges()
