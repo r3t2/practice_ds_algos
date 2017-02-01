@@ -53,11 +53,17 @@ public class PrimsLazy
   private void mst(EdgeWeightedGraph ewg, int v)
   {
     int w;
+    Edge minE;
     
     for(Edge e: ewg.adj(v))
     {
-      w = e.other(v);
-      
+      pq.add(e);
+    }
+    
+    while (!pq.isEmpty())
+    {
+      minE = pq.remove();
+            
     }
   }
   
