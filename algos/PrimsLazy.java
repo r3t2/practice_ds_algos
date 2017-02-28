@@ -53,23 +53,58 @@ public class PrimsLazy
   private void mst(EdgeWeightedGraph ewg, int v)
   {
     int w;
+
     Edge minE;
     
-    for(Edge e: ewg.adj(v))
-    {
-      pq.add(e);
-    }
+    marked[v] = true;
+    addAdjEdgesToPQ(ewg, v);
+
     
     while (!pq.isEmpty())
     {
       minE = pq.remove();
-            
+      v = minE.either(); w = minE.other(v);
+      if(!uf.connected(v, w))
+      {
+        mstEdges.add(minE);
+        uf.union(v, w);
+
+        if(!marked[v])
+        {
+          marked[v] = true;
+          addAdjEdgesToPQ(ewg, v);
+        }
+
+        if(!marked[w])
+        {
+          marked[w] = true;
+          addAdjEdgesToPQ(ewg, w);
+        }
+
+      }
     }
   }
+
+  private void addAdjEdgesToPQ(EdgeWeightedGraph ewg, int v)
+  {
+    int w;
+
+    for(Edge e: ewg.adj(v))
+    {
+      w = e.other(v);
+
+      if(!uf.connected(v, w))
+      {
+        pq.add(e);
+      }
+    }
+    
+  }
+  
   
   public Iterable<Edge> edges()
   {
-  
+    return mstEdges;  
   }
 
 }
