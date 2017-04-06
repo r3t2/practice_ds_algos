@@ -16,18 +16,26 @@ public class PrimsLazy
   private int V;
   private int E;
   
+  /* Union-Find data structure to determine connectivity between vertices */
   private UF uf;
+  
+  /* Priority Queue maintains the next edge to be considered for MST */
   private PriorityQueue<Edge> pq;
+
+  /* ArrayList to maintain a list of edges in MST */
   private ArrayList<Edge> mstEdges;
+
+  /* Maintain a array to know which vertices have already been visited */
   private boolean [] marked;
   
   
   
   public PrimsLazy(EdgeWeightedGraph ewg)
   {
-  
+  	/* Get the nubmer of vertices in the EWG */
     V = ewg.V();
     
+    /*Initializations*/
     marked = new boolean[V];
     for (int i=0; i<V; i++)
     {
@@ -39,6 +47,7 @@ public class PrimsLazy
     
     mstEdges = new ArrayList<Edge> ();
     
+    /* Call the MST algorithm from each of the unvisited vertices */
     for(int i=0; i<V; i++)
     {
       if(!marked[i])
@@ -93,7 +102,7 @@ public class PrimsLazy
     {
       w = e.other(v);
 
-      if(!uf.connected(v, w))
+      if((!uf.connected(v, w)) && (!pq.contains(e)))
       {
         pq.add(e);
       }

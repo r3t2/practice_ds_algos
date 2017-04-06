@@ -59,5 +59,24 @@ public class Edge implements Comparable<Edge>
     return 0;
   }
 
+  public boolean equals(Object o)
+  {
+    boolean retValue = false;
+    
+    if (o instanceof Edge)
+    {
+      int ov, ow;
+      ov = o.either(); ow = o.other(ov);
+      if ( weight.equals(o.weight()) && ((v == ov && w == ow) || (v == ow && w == ov)) )
+      {
+        retValue = true;
+      }
+
+    }
+
+    return retValue;
+
+  }
+
 
 }
