@@ -59,14 +59,14 @@ public class PrimsLazy
   }
   
   
-  private void mst(EdgeWeightedGraph ewg, int v)
+  private void mst(EdgeWeightedGraph ewg, int u)
   {
-    int w;
+    int v, w;
 
     Edge minE;
     
-    marked[v] = true;
-    addAdjEdgesToPQ(ewg, v);
+    marked[u] = true;
+    addAdjEdgesToPQ(ewg, u);
 
     
     while (!pq.isEmpty())

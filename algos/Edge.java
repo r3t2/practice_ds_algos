@@ -16,7 +16,7 @@
 public class Edge implements Comparable<Edge>
 {
 
-  private double weight;
+  private Double weight;
 
   private int v;
 
@@ -66,8 +66,8 @@ public class Edge implements Comparable<Edge>
     if (o instanceof Edge)
     {
       int ov, ow;
-      ov = o.either(); ow = o.other(ov);
-      if ( weight.equals(o.weight()) && ((v == ov && w == ow) || (v == ow && w == ov)) )
+      ov = ((Edge)o).either(); ow = ((Edge)o).other(ov);
+      if ( weight.equals(((Edge)o).weight()) && ((v == ov && w == ow) || (v == ow && w == ov)) )
       {
         retValue = true;
       }
