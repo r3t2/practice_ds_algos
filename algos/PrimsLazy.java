@@ -9,7 +9,9 @@
 /* imports */
 import java.util.PriorityQueue;
 import java.util.ArrayList;
-
+import java.util.Arrays;
+import java.util.Scanner;
+import java.io.File;
 
 public class PrimsLazy
 {
@@ -114,6 +116,22 @@ public class PrimsLazy
   public Iterable<Edge> edges()
   {
     return mstEdges;  
+  }
+
+  public static void main(String[] args) throws Exception
+  {
+    System.out.println("args = " + Arrays.toString(args));
+    EdgeWeightedGraph ewg = new EdgeWeightedGraph(new Scanner(new File(args[0])));
+
+    System.out.println(ewg);
+
+    PrimsLazy pmst = new PrimsLazy(ewg);
+
+    System.out.println("MST::");
+    for (Edge e: pmst.edges())
+    {
+      System.out.println(e);
+    }
   }
 
 }
