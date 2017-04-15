@@ -37,6 +37,9 @@ public class Edge implements Comparable<Edge>
   public int other(int v)
   {
   return (v==this.v ? w : v) ;
+      int other = w;
+    if(v == this.w)
+      other = v;
   }
 
   public double weight()

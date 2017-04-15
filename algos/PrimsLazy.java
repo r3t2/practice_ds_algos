@@ -103,6 +103,7 @@ public class PrimsLazy
     for(Edge e: ewg.adj(v))
     {
       w = e.other(v);
+      printstr("v = " + v + ", w = "+ w);
 
       if((!uf.connected(v, w)) && (!pq.contains(e)))
       {
@@ -134,4 +135,8 @@ public class PrimsLazy
     }
   }
 
+  private void printstr(String str)
+  {
+    System.out.println(str);
+  }
 }
