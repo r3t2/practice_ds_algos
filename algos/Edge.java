@@ -31,15 +31,15 @@ public class Edge implements Comparable<Edge>
 
   public int either()
   {
-  return v;
+    return v;
   }
 
-  public int other(int v)
+// this.v = 6, this.w = 0, u = 0, retVal = 0
+// this.v = 4, this.w = 7, u = 7, retVal = 7
+  public int other(int u)
   {
-  return (v==this.v ? w : v) ;
-      int other = w;
-    if(v == this.w)
-      other = v;
+    int retVal = (u == this.v) ? this.w : this.v;
+    return retVal ;
   }
 
   public double weight()
@@ -54,12 +54,12 @@ public class Edge implements Comparable<Edge>
 
   public int compareTo(Edge that)
   {
-  if(this.weight < that.weight)
-    return -1;
-  else if(this.weight > that.weight)
-    return 1;
-  else
-    return 0;
+    if(this.weight < that.weight)
+      return -1;
+    else if(this.weight > that.weight)
+      return 1;
+    else
+      return 0;
   }
 
   public boolean equals(Object o)
