@@ -2,55 +2,69 @@ public class LeetCode_AddTwoNumbers
 {
     public static ListNode addTwoNumbers(ListNode l1, ListNode l2)
     {
-        ListNode ret = null;
-        LinkedListMine result = new LinkedListMine();
-        int sum = 0, carry = 0, rem = 0;
+        ListNode retHead = new ListNode(-1);
+        ListNode reti = retHead;
+        int rem;
+        
+        AddDigits a = new AddDigits();
+        
         
         /* Assume that the number zero will also be a linked list. 
         Null linked list is not a valid number.
         */
-        if(l1 != null && l2 != null)
+        if(l1 == null || l2 == null)
         {
-            ListNode l1i = l1, l2i = l2;
-            /*3,4,5; 6,0,0*/
-            while(l1i != null && l2i !=null)
-            {
-                
-                sum = l1i.val + l2i.val + carry;// 9,4,5
-                rem = sum % 10;//9 
-                carry = sum/ 10;//0 
-                result.insertTail(rem);// 9
-                //System.out.println(String.format("sum = %d, rem = %d, carry = %d, l1i.val = %d, l2i.val = %d\n", sum, rem, carry, l1i.val, l2i.val));
-                l1i = l1i.next;
-                l2i = l2i.next;
-                
-            }
-            while(l1i !=null)
-            {
-                sum = l1i.val + carry;
-                rem = sum % 10;
-                carry = sum/10;
-                result.insertTail(rem);
-                l1i = l1i.next;
-            }
-            while(l2i != null)
-            {
-                sum = l2i.val + carry;
-                rem = sum % 10;
-                carry = sum/10;
-                result.insertTail(rem);
-                l2i = l2i.next;
-            }
-            
-            if(carry != 0)
-            {
-                result.insertTail(carry);
-            }
-            
-            ret = result.head;
+            return null;
         }
         
-        return ret;        
+        ListNode l1i = l1, l2i = l2;
+        while(l1i != null && l2i !=null)
+        {
+            rem = a.add(l1i.val, l2i.val);
+            reti = insertNext(reti, rem);
+            
+            l1i = l1i.next;
+            l2i = l2i.next;
+            
+        }
+        while(l1i !=null)
+        {
+            rem = a.add(l1i.val, 0);
+            reti = insertNext(reti, rem);
+            l1i = l1i.next;
+        }
+        while(l2i != null)
+        {
+            rem = a.add(0, l2i.val);
+            reti = insertNext(reti, rem);
+            l2i = l2i.next;
+        }
+        
+        if(a.carry != 0)
+        {
+            reti.next = new ListNode(a.carry);
+        }
+            
+            
+        
+        
+        return retHead.next;        
+    }
+    
+    public static ListNode insertNext(ListNode reti, int val)
+    {
+        if(reti == null)
+        {
+            reti = new ListNode(val);
+        }
+        else
+        {
+            reti.next = new ListNode(val);
+            reti = reti.next;
+        }
+        
+        
+        return reti;
     }
     
     
