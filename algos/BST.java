@@ -174,6 +174,47 @@ public class BST<K extends Comparable<K>, V>
 
 	}
 
+	public K rank(long rank)
+	{
+		return rank(root, rank);
+	}
+
+	private K rank(BSTNode<K, V> node, long rank)
+	{
+		K ret;
+
+		if(node == null)
+		{
+			return null;
+		}
+
+		long lsize;
+		if (node.left == null)
+		{
+			lsize = 1;
+		}
+		else
+		{
+			lsize = node.left.size + 1;
+		}
+
+		if(rank == lsize)
+		{
+			ret = node.key;
+		}
+		else if(rank < lsize)
+		{
+			ret = rank(node.left, rank);
+		}
+		else
+		{
+			ret = rank(node.right, rank - lsize);
+		}
+
+		return ret;
+
+	}
+
 
 
 
@@ -258,12 +299,15 @@ public class BST<K extends Comparable<K>, V>
 		System.out.println("heightTraversal = " + bst.heightTraversal());
 		System.out.println("height = " + bst.height());
 
+		int cnt = 0;
 		for (int i: new int[] {5, 15, 25, 35, 45, 55, 65, 75, 85, 95, 125})
 		{
 
 			System.out.println("i = " + i 
 					   + ", floor = " + bst.floor(i)
-					   + ", ceil = " + bst.ceil(i));
+					   + ", ceil = " + bst.ceil(i)
+					   + ", rank(" + cnt +") = " + bst.rank(cnt));
+			cnt++;
 		}
 	}
 }
