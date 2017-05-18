@@ -4,10 +4,12 @@ import java.util.Scanner;
 
 public class BST<K extends Comparable<K>, V>
 {
+    /* define private variable for root*/
 	private BSTNode<K, V> root;
 
 	public void insert(K key, V val)
 	{
+    /*Call the private insert method*/
 		root = insert(root, key, val);
 		return;
 	}
