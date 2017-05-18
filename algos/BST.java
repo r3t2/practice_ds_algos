@@ -216,6 +216,57 @@ public class BST<K extends Comparable<K>, V>
 	}
 
 
+	public void deleteMax()
+	{
+		root = deleteMax(root);
+	}
+
+	private BSTNode<K,V> deleteMax(BSTNode<K,V> node)
+	{
+		if(node == null)
+			return null;
+		else if (node.right == null)
+			return node.left;
+		else
+		{
+			node.right = deleteMax(node.right);
+			node.size = size(node.left) + size(node.right) + 1;
+			return node;
+		}
+	}
+
+	public void deleteMin()
+	{
+		root = deleteMin(root);
+	}
+
+	private BSTNode<K,V> deleteMin(BSTNode<K,V> node)
+	{
+		if(node == null)
+		{
+			return null;
+		}
+
+		if(node.left == null)
+		{
+			return node.right;
+		}
+
+		node.left = deleteMin(node.left);
+		node.size = size(node.left) + size(node.right) +1;
+		return node;
+
+	}
+
+	private long size(BSTNode<K,V> x)
+	{
+		if(x == null)
+			return 0;
+		else
+			return x.size;
+	}
+
+
 
 
 	private static class BSTNode<K extends Comparable<K>, V>
