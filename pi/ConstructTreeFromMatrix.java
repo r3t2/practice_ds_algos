@@ -3,6 +3,11 @@ import java.util.LinkedList;
 import java.util.Deque;
 import java.util.Arrays;
 
+/*
+You are given a NxN boolean matrix, where matrix(i,j) will be one if 'i' is a parent of 'j' in a tree, otherwise, it is zero. 
+Construct this tree.
+*/
+
 public class ConstructTreeFromMatrix
 {
 	private Node root;
