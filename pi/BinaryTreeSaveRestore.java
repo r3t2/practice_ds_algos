@@ -98,6 +98,25 @@ public class BinaryTreeSaveRestore<K extends Comparable<K>>
 
   }
   
+  public boolean isMirror()
+  {
+    return isMirror(root.left, root.right);
+  }
+  private boolean isMirror(Node x, Node y)
+  {
+    if(x == null && y == null)
+      return true;
+    else if ((x == null && y != null) || (x != null && y == null))
+      return false;
+    else if (! x.key.equals(y.key))
+      return false;
+
+    /* x.key equals y.key */
+    boolean ret1 = isMirror(x.left, y.right);
+    boolean ret2 = isMirror(x.right, y.left);
+
+    return ret1 & ret2;
+  }
 
   private class Node
   {
@@ -142,5 +161,17 @@ public class BinaryTreeSaveRestore<K extends Comparable<K>>
 
     System.out.println("lInOut:: " + Arrays.toString(lInOut.toArray()));
     System.out.println("lPreOut:: " + Arrays.toString(lPreOut.toArray()));
+
+
+    /* test mirror */
+    lIn = new LinkedList<Integer>(); lIn.add(20); lIn.add(50); lIn.add(30); lIn.add(60); lIn.add(30); lIn.add(50); lIn.add(20);
+    lPre = new LinkedList<Integer>(); lIn.add(60); lIn.add(50); lIn.add(20); lIn.add(30); lIn.add(50); lIn.add(30); lIn.add(20);
+    lIn.addAll(lPre);
+
+    BinaryTreeSaveRestore<Integer> b2 = new BinaryTreeSaveRestore<Integer> ();
+    b2.restore(lIn);
+    System.out.println(b2.isMirror());
+
+
   }
 }
