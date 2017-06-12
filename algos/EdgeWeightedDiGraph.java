@@ -55,11 +55,11 @@ public class EdgeWeightedDiGraph
     return adj[v];
   }
 
-  public long V()
-  {
+  public int V()
+  {    
     return this.V;
   }
-  public long E()
+  public int E()
   {
     return this.E;
   }
