@@ -1,4 +1,4 @@
-public class DirectedEdge
+public class DirectedEdge implements Comparable<DirectedEdge>
 {
   private double weight;
 
@@ -10,6 +10,23 @@ public class DirectedEdge
     this.from = from;
     this.to = to;
     this.weight = weight;
+  }
+
+  public DirectedEdge()
+  {
+  }
+
+  public String toString()
+  {
+    return from + ", " + to + ", " + weight;
+  }
+
+  public int compareTo(DirectedEdge that)
+  {
+    Double thisWeight = new Double(weight);
+    Double thatWeight = new Double(that.weight);
+
+    return thisWeight.compareTo(thatWeight);
   }
 
   public int from()
@@ -27,7 +44,5 @@ public class DirectedEdge
     return this.weight;
   }
 
-  public DirectedEdge()
-  {
-  }
+
 }
