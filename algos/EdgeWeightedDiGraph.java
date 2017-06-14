@@ -25,7 +25,7 @@ public class EdgeWeightedDiGraph
     
     V = sc.nextInt();
     int E_expected = sc.nextInt();
-    
+
     init_adj();
     
     for (int i=0; i<E_expected; i++)
@@ -55,6 +55,21 @@ public class EdgeWeightedDiGraph
     return adj[v];
   }
 
+  public String toString()
+  {
+    StringBuilder sb = new StringBuilder();
+    sb.append("V = " + V + ", E = " + E + "\n");
+
+    for(int i=0; i<V; i++)
+    {
+      for(DirectedEdge e: adj[i]) 
+      {
+        sb.append(e.toString() + "\n");
+      }
+    }
+    return sb.toString();
+  }
+
   public int V()
   {    
     return this.V;
@@ -69,6 +84,5 @@ public class EdgeWeightedDiGraph
     adj[from].add(new DirectedEdge(from, to, weight));
 
     this.E++;
-
   }
 }
