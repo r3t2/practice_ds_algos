@@ -1,6 +1,8 @@
 import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
 
 
 public class ShortestPathDijkstra
@@ -29,7 +31,7 @@ public class ShortestPathDijkstra
 
     distTo = new Double[V];
     edgeTo = new Integer[V];
-    
+
     initArr(distTo, Double.POSITIVE_INFINITY);
     initArr(edgeTo, -1);
 
@@ -68,6 +70,22 @@ public class ShortestPathDijkstra
         relaxEdge(dE);
       }
     }
+  }
+
+  public Iterable<Integer> pathTo(int dest)
+  {
+    Deque<Integer> dq = new LinkedList<Integer> ();
+    
+    int i = dest;
+
+    while((edgeTo[i] != -1) && (edgeTo[i] != i))
+    {
+      i = edgeTo[i];
+      dq.addFirst(i);
+    }
+
+    return dq;
+
   }
 
   private void relaxEdge(DirectedEdge e)
@@ -136,6 +154,9 @@ public class ShortestPathDijkstra
 
     ShortestPathDijkstra sp = new ShortestPathDijkstra(edwg, 0);
     System.out.println(sp);
+
+    System.out.println("path to 1:: " + sp.pathTo(1));
+    System.out.println("path to 3:: " + sp.pathTo(3));
 
   }
 }
