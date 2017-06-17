@@ -31,21 +31,33 @@ public class ShortestPathBellMan
 	}
 	private void runBellMan(int s)
 	{
+		boolean graphUpdated;
+
 		for (int i=0; i<V; i++)
 		{
+			graphUpdated = false;
+
 			for (int j=0; j<V; j++)
 			{
 				for (DirectedEdge e: g.adj(j))
 				{
-					relaxEdge(e);
+					graphUpdated = graphUpdated || relaxEdge(e);
 				}
+			}
+			
+			if(graphUpdated == false)
+			{
+				System.out.println("ending relaxEdge when i = " + i);
+				break;
 			}
 		}
 
 	}
 
-	private void relaxEdge(DirectedEdge e)
+	private boolean relaxEdge(DirectedEdge e)
 	{
+		boolean retVal = false;
+
 		int v = e.from(), w = e.to();
 		double weight = e.weight();
 
@@ -53,7 +65,10 @@ public class ShortestPathBellMan
 		{
 			distTo[w] = distTo[v] + weight;
 			edgeTo[w] = v;
+			retVal = true;
 		}
+
+		return retVal;
 	}
 
 	private <T> void init_arr(T[] arr, T val)
