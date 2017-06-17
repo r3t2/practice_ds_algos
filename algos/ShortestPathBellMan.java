@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.Scanner;
-
+import java.util.LinkedList;
+import java.util.Deque;
 
 public class ShortestPathBellMan
 {
@@ -77,6 +78,22 @@ public class ShortestPathBellMan
 		{
 			arr[i] = val;
 		}
+	}
+
+
+	public Iterable<Integer> pathTo(int v)
+	{
+		Deque<Integer> dq = new LinkedList<Integer> ();
+
+		while( edgeTo[v]!=-1 && edgeTo[v]!=v )
+		{
+			v = edgeTo[v];
+			dq.addFirst(v);
+		}
+
+		return dq;
+
+
 	}
 
 	public String toString()
