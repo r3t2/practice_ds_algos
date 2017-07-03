@@ -26,6 +26,19 @@ public class UnDirectedGraph
     }
   }
 
+  public UnDirectedGraph(UnDirectedGraph g)
+  {
+    init(g.V());
+
+    for(int i=0; i<V; i++)
+    {
+      adj[i] = new ArrayList<Integer> (g.adj[i]);
+    }
+
+    this.E = g.E();
+
+  }
+
   private void init(int V)
   {
     this.V = V;
@@ -61,4 +74,5 @@ public class UnDirectedGraph
   {
     return E;
   }
+
 }
