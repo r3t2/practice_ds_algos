@@ -65,6 +65,11 @@ public class UnDirectedGraph
     E--;
   }
 
+  public Iterable<Integer> adj(int v)
+  {
+    return adj[v];
+  }
+
   public int V()
   {
     return V;
@@ -73,6 +78,42 @@ public class UnDirectedGraph
   public int E()
   {
     return E;
+  }
+
+  public String toString()
+  {
+    StringBuffer sb = new StringBuffer();
+    sb.append(V + "\n");
+    sb.append(E + "\n");
+
+    for (int v=0; v<V; v++)
+    {
+        for(int w: adj[v])
+        {
+            sb.append(v + " " + w + "\n");
+        }
+    }
+
+    return sb.toString();
+  }
+
+  public static void main(String[] args)
+  {
+    Scanner sc = new Scanner(System.in);
+    UnDirectedGraph g = new UnDirectedGraph(sc);
+
+    UnDirectedGraph g2 = new UnDirectedGraph(g);
+
+    System.out.println("g = \n" + g);
+    System.out.println("g2 = \n" + g2);
+
+    g2.removeEdge(0,5);
+    g2.removeEdge(0,1);
+    g2.removeEdge(0,2);
+    g2.removeEdge(0,6);
+
+    System.out.println("g = \n" + g);
+    System.out.println("g2 = \n" + g2);
   }
 
 }
