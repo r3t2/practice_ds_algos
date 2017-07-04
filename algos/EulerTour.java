@@ -15,6 +15,8 @@ public class EulerTour
 
   private Deque<Integer> [] cycles;
 
+  private Iterable<Integer> eulerPath;
+
 
   public EulerTour(UnDirectedGraph g)
   {
@@ -38,6 +40,10 @@ public class EulerTour
     {
       System.out.println(cycles[i]);
     }
+
+    eulerPath = mergeCycles();
+
+    System.out.println("eulerPath = \n" + eulerPath);
 
 
   }
@@ -81,6 +87,44 @@ public class EulerTour
     }
 
     return v;
+  }
+
+  private Iterable<Integer> mergeCycles()
+  {
+    Deque<Integer> path = new LinkedList<Integer> ();
+
+    boolean [] marked = new boolean[V];
+
+    for (int i=0; i<V; i++)
+    {
+      marked[i] = false;
+    }
+
+    path.add(0);
+    mergeCycles(0, marked, path);
+
+    return path;
+
+  }
+
+  private void mergeCycles(int v, boolean [] marked, Deque<Integer> path)
+  {
+    marked[v] = true;
+
+    if(cycles[v] == null)
+    {
+      /* nothing to add to path*/
+      return;
+    }
+
+    for(int w: cycles[v])
+    {
+      path.add(w);
+      if(!marked[w])
+      {
+        mergeCycles(w, marked, path);
+      }
+    }
   }
 
   public static void main(String[] args)
