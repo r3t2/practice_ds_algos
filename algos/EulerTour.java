@@ -1,5 +1,7 @@
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.Iterator;
 
 public class EulerTour
 {
@@ -32,16 +34,21 @@ public class EulerTour
       nextV = getNextV(nextV);
     }
 
+    for(int i=0; i<V; i++)
+    {
+      System.out.println(cycles[i]);
+    }
+
 
   }
 
   private Deque<Integer> getNextCycle(int nextV)
   {
     Deque<Integer> cycle = new LinkedList<Integer>();
-    Iterable<Integer> adj_v_itr;
+    Iterator<Integer> adj_v_itr;
 
     int v = nextV, w;
-    adj_v_itr = g.adj(v);
+    adj_v_itr = g.adj(v).iterator();
 
     while(adj_v_itr.hasNext())
     {
@@ -50,12 +57,13 @@ public class EulerTour
       cycle.add(w);
 
       v = w;
-      adj_v_itr = g.adj(v);
+      adj_v_itr = g.adj(v).iterator();
     }
 
     if(v != nextV)
     {
-      throw new Exception("cycle doesn't terminate at nextV = " + nextV);
+      //throw new Exception("cycle doesn't terminate at nextV = " + nextV);
+      System.out.println("cycle doesn't terminate at nextV = " + nextV);
       //cycle = null;
     }
     return cycle;
@@ -63,13 +71,23 @@ public class EulerTour
 
   private int getNextV(int v)
   {
-    Iterable<Integer> adj_v_itr = g.adj(v);
+    Iterator<Integer> adj_v_itr = g.adj(v).iterator();
 
     while(!adj_v_itr.hasNext() && (v < V))
     {
       v = v+1;
+      if(v<V)
+        adj_v_itr = g.adj(v).iterator();
     }
 
     return v;
+  }
+
+  public static void main(String[] args)
+  {
+    UnDirectedGraph g = new UnDirectedGraph(new Scanner(System.in));
+    System.out.println(g);
+
+    EulerTour et = new EulerTour(g);
   }
 }
