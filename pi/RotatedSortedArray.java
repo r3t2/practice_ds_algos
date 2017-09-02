@@ -63,6 +63,22 @@ public class RotatedSortedArray
 		}
 	}
 
+	public int blindPivotBSearch(int [] x, int searchKey)
+	{
+		return blindPivotBSearch(x, 0, x.length-1, searchKey);
+	}
+
+	private int blindPivotBSearch(int [] x, int lo, int hi, int searchKey)
+	{
+		if(hi<lo)
+			return -1;
+
+		int mid = (lo+hi)/2;
+
+		if(x[mid] == searchKey)
+			return mid;
+	}
+
 	public int pivotBinarySearch(int [] x, int searchKey)
 	{
 		int pivot = pivot(x);
