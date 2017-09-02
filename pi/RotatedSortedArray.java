@@ -15,7 +15,7 @@ public class RotatedSortedArray
 
 		/* if the array doesn't have a rotation i.e., pivot is at 0, return 0*/
 		/*For arrays where all elements are equal, we'll still call the recursive method below*/
-		if((x[lo] < x[mid])&&(x[mid] < x[hi]))
+		if((x[lo] < x[hi]))
 		{
 			return 0;
 		}
@@ -29,7 +29,11 @@ public class RotatedSortedArray
 		if(lo > hi)
 			return -1;
 
-		if((hi - lo) == 1)
+		if(hi-lo == 0)
+    {
+      return lo;
+    }
+    else if((hi - lo) == 1)
 		{
 			if(x[lo] > x[lo+1]) return (lo+1);
 			else return -1;
@@ -104,7 +108,7 @@ public class RotatedSortedArray
     }
     else /* x[mid] = x[lo]*/
     {
-      
+      return -1; //wrong
     }
 
 	}
@@ -152,6 +156,16 @@ public class RotatedSortedArray
 		runPivot(x);
 		runBinarySearch(x, 5);
     runBlindPivotBSearch(x,5);
+
+    x = new int []{1,3};
+    runPivot(x);
+    runBinarySearch(x, 1);
+    runBlindPivotBSearch(x,1);
+
+    x = new int []{1,3,1,1,1};
+    runPivot(x);
+    runBinarySearch(x, 3);
+    runBlindPivotBSearch(x,3);
 
 		x = new int []{4,0,1,2,3};
 		runPivot(x);
