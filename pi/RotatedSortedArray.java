@@ -63,24 +63,80 @@ public class RotatedSortedArray
 		}
 	}
 
+	public int pivotBinarySearch(int [] x, int searchKey)
+	{
+		int pivot = pivot(x);
+		return pivotBinarySearch(x, 0, x.length-1, pivot, searchKey);
+
+	}
+	private int pivotBinarySearch(int [] x, int lo, int hi, int pivot, int searchKey)
+	{
+		if(hi < lo)
+			return -1;
+
+		int mid = (lo+hi)/2;
+
+		int midVal = x[vBufIdx(mid, pivot, x.length)];
+		if(midVal == searchKey)
+			return vBufIdx(mid, pivot, x.length);
+
+		if(midVal > searchKey)
+		{
+			return pivotBinarySearch(x, lo, mid-1, pivot, searchKey);
+		}
+		else
+		{
+			return pivotBinarySearch(x, mid+1, hi, pivot, searchKey);
+		}
+
+	}
+	private int vBufIdx(int idx, int pivot, int bufLen)
+	{
+		int finalIdx = (idx+pivot) % bufLen;
+		if(finalIdx < 0) finalIdx += bufLen;
+
+		return finalIdx;
+	}
+
 	public static void main(String [] args)
 	{
-		runPivot(new int []{0,1,2,3,4});
+		int [] x;
 
-		runPivot(new int []{4,0,1,2,3});
+		x = new int []{0,1,2,3,4,5};
+		runPivot(x);
+		runBinarySearch(x, 5);
 
-		runPivot(new int []{1,2,3,4,0});
+		x = new int []{4,0,1,2,3};
+		runPivot(x);
+		runBinarySearch(x, 0);
 
-		runPivot(new int []{1,2,3,4,4,4,4,0});
+		x = new int []{1,2,3,4,0};
+		runPivot(x);
+		runBinarySearch(x, 5);
 
-		runPivot(new int []{4,4,4,4,4,4});
+		x = new int []{1,2,3,4,4,4,4,0};
+		runPivot(x);
+		runBinarySearch(x, 0);
 
-		runPivot(new int []{4,4,4,1,4,4});
+		x = new int []{4,4,4,4,4,4};
+		runPivot(x);
+		runBinarySearch(x, 4);
+
+		x = new int []{4,4,4,1,4,4};
+		runPivot(x);
+		runBinarySearch(x, 1);
+
 	}
 	private static void runPivot(int [] x)
 	{
 		RotatedSortedArray r = new RotatedSortedArray();
 		System.out.println("input = " + Arrays.toString(x));
 		System.out.println("pivot = " + r.pivot(x));	
+	}
+	private static void runBinarySearch(int [] x, int searchKey)
+	{
+		RotatedSortedArray r = new RotatedSortedArray();
+		System.out.println("input= " + Arrays.toString(x) + ", searchKey = " + searchKey);
+		System.out.println("output index = " + r.pivotBinarySearch(x, searchKey));
 	}
 }
