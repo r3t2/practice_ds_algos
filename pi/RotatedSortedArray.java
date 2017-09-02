@@ -1,5 +1,17 @@
 import java.util.Arrays;
+/*
+Leetcode:
+Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
 
+(i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+
+You are given a target value to search. If found in the array return its index, otherwise return -1.
+
+You may assume NO duplicate exists in the array. -- PART 1
+You may assume duplicate exists in the array. -- PART 2
+
+
+*/
 public class RotatedSortedArray
 {
 	public RotatedSortedArray()
@@ -147,6 +159,12 @@ public class RotatedSortedArray
 
 		return finalIdx;
 	}
+
+  public int findMin(int [] x)
+  {
+    int pivot = pivot(x);
+    return x[vBufIdx(0, pivot,x.length)];
+  }
 
 	public static void main(String [] args)
 	{
