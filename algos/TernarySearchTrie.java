@@ -1,3 +1,6 @@
+import java.util.Queue;
+import java.util.LinkedList;
+
 public class TernarySearchTrie<V>
 {
 
@@ -74,6 +77,33 @@ public class TernarySearchTrie<V>
 
   }
 
+  public Iterable<String> keys()
+  {
+    StringBuilder sb = new StringBuilder();
+    Queue<String> keysQ = new LinkedList<String> ();
+
+    keys(root, sb, keysQ, 0);
+
+    return keysQ;
+  }
+
+  private void keys(Node n, StringBuilder sb, Queue<String> q, int d)
+  {
+    if(n == null) return;
+
+    if(n.left != null) keys(n.left, sb, q, d);
+
+    sb.append(n.c);
+    
+    if(n.val != null) q.add(sb.toString());
+    
+    if(n.middle!=null) keys(n.middle, sb, q, d+1);
+
+    sb.deleteCharAt(d);
+
+    if(n.right != null) keys(n.right, sb, q, d);
+  }
+
 
 
   private class Node
@@ -97,5 +127,7 @@ public class TernarySearchTrie<V>
     System.out.println(t.get("cat"));
     System.out.println(t.get("bat"));
     System.out.println(t.get("apple"));
+
+    System.out.println(t.keys());
   }
 }
