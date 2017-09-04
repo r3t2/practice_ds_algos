@@ -40,6 +40,31 @@ public class RTrie<V>
     }
   }
 
+  public Iterable<String> prefixMatch(String prefix)
+  {
+    Node prefixNode = findNodeEndingAtPrefix(root, prefix, 0);
+    Queue<String> prefixes = new LinkedList<String> ();
+    StringBuilder sb = new StringBuilder(prefix.substring(0, prefix.length()));
+
+    if(prefixNode != null)
+    {
+      keys(prefixNode, prefixes, sb, prefix.length());
+    }
+
+    return prefixes;
+
+  }
+
+  private Node findNodeEndingAtPrefix(Node n, String prefix, int d)
+  {
+    if(n == null) return null;
+
+    if(prefix.length() == d) return n;
+
+    char c = prefix.charAt(d);
+    return findNodeEndingAtPrefix(n.nodes[c], prefix, d+1);
+  }
+
   public void delete(String key)
   {
     delete(root, key, 0);
@@ -140,6 +165,10 @@ public class RTrie<V>
     System.out.println(r.get("ab"));
     System.out.println(r.get("cab"));
     System.out.println(r.get("abb"));
+    System.out.println(r.get("can"));
+    System.out.println(r.get("cans"));
+    System.out.println(r.get("cats"));
+    System.out.println(r.get("cat"));
 
     System.out.println(r.keys());
 
@@ -158,6 +187,17 @@ public class RTrie<V>
     r.put("def", 2);
     r.put("abt", 3);
     r.put("d", 4);
+    r.put("c", 4);
+    r.put("cats", 4);
+    r.put("cat", 4);
+    r.put("cans", 4);
+    r.put("can", 4);
+
+    System.out.println(r.keys());
+    System.out.println(r.keys());
+
+    System.out.println("keys with prefix ca = " + r.prefixMatch("ca"));
+
     System.out.println(r.keys());
   }
 }
