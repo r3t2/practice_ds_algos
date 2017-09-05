@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class SkylineProblem
 {
@@ -73,7 +74,7 @@ public class SkylineProblem
 
 		int numBuildings = 0;
 
-		while(sc.hasNext())
+		while(sc.hasNextInt())
 		{
 			Li = sc.nextInt();
 			Ri = sc.nextInt();
@@ -83,11 +84,19 @@ public class SkylineProblem
 			numBuildings++;
 		}
 
+		System.out.println("input buildings:");
+		for(int[] building: buildings)
+		{
+			System.out.println(Arrays.toString(building));
+		}
+
 		SkylineProblem s = new SkylineProblem();
-		List<int[]> skyline = s.getSkyLine(buildings.toArray(new int[numBuildings][3]));
+		int[][] buildingsArray = buildings.toArray(new int[numBuildings][3]);
 
 
-		System.out.println(skyline);
+		List<int[]> skyline = s.getSkyLine(buildingsArray);
+
+		System.out.println("skyline = ");
 		for(int[] point : skyline)
 		{
 			System.out.println(point[0] + ", " + point[1]);
