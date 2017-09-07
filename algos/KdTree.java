@@ -58,8 +58,25 @@ public class KdTree
   /* does the DS contain the input point */
   public boolean contains(Point2D p)
   {
-    return false;
+    return contains(root, p);
   }
+
+  private boolean contains(Node n, Point2D p)
+  {
+
+  	if(n == null) return false;
+
+  	if(n.p.equals(p)) return true;
+
+  	Comparator<Point2D> comp;
+  	if(n.d == 0) comp = Point2D.X_ORDER;
+  	else comp = Point2D.Y_ORDER;
+
+  	if(comp.compare(p, n.p) <0) return contains(n.left, p);
+  	else return contains(n.right, p);
+
+  }
+
   /*return Iterable of points contained in the input rectangle*/
   public Iterable<Point2D> range(RectHV r)
   {
@@ -192,6 +209,10 @@ public class KdTree
   	p = new Point2D(0.66, 0.26); System.out.println("nearest to" + p + "=" + kd.nearest(p));
   	p = new Point2D(0.23, 0.23); System.out.println("nearest to" + p + "=" + kd.nearest(p));
   	p = new Point2D(0.78, 0.78); System.out.println("nearest to" + p + "=" + kd.nearest(p));
+
+  	p = new Point2D(0.75, 0.75); System.out.println("contains " + p + "?=" + kd.contains(p));
+  	p = new Point2D(0.25, 0.5); System.out.println("contains " + p + "?=" + kd.contains(p));
+  	p = new Point2D(0.43, 0.89); System.out.println("contains " + p + "?=" + kd.contains(p));
   }
 
   private static class Node
