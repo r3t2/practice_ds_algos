@@ -185,6 +185,13 @@ public class KdTree
   	kd.insert(new Point2D(0.75, 0.75));
 
   	kd.draw();
+
+  	Point2D p;
+  	p = new Point2D(0.51, 0.51); System.out.println("nearest to" + p + "=" + kd.nearest(p));
+  	p = new Point2D(0.26, 0.26); System.out.println("nearest to" + p + "=" + kd.nearest(p));
+  	p = new Point2D(0.66, 0.26); System.out.println("nearest to" + p + "=" + kd.nearest(p));
+  	p = new Point2D(0.23, 0.23); System.out.println("nearest to" + p + "=" + kd.nearest(p));
+  	p = new Point2D(0.78, 0.78); System.out.println("nearest to" + p + "=" + kd.nearest(p));
   }
 
   private static class Node
