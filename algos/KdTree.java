@@ -3,6 +3,8 @@ import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class KdTree
 {
@@ -80,7 +82,28 @@ public class KdTree
   /*return Iterable of points contained in the input rectangle*/
   public Iterable<Point2D> range(RectHV r)
   {
-    return null;
+    Queue<Point2D> q = new LinkedList<Point2D> ();
+
+    range(root, r, q);
+    return q;
+  }
+
+  private void range(Node n, RectHV r, Queue<Point2D> q)
+  {
+    if(n == null) return;
+
+    if(r.contains(n.p)) q.offer(n.p);
+
+    if(n.d == 1)
+    {
+      if(r.xmin() <= n.p.x()) range(n.left, r, q);
+      if(r.xmax() >= n.p.x()) range(n.right, r, q);
+    }
+    else
+    {
+      if(r.ymin() <= n.p.y()) range(n.left, r, q);
+      if(r.ymax() >= n.p.y()) range(n.right, r, q);
+    }
   }
 
   /* number of points bounded by the rectangle defined by r */
@@ -213,6 +236,9 @@ public class KdTree
   	p = new Point2D(0.75, 0.75); System.out.println("contains " + p + "?=" + kd.contains(p));
   	p = new Point2D(0.25, 0.5); System.out.println("contains " + p + "?=" + kd.contains(p));
   	p = new Point2D(0.43, 0.89); System.out.println("contains " + p + "?=" + kd.contains(p));
+
+    RectHV r;
+    r = new RectHV(0.0, 0.0, 1.0, 1.0); System.out.println("points in rectangle " + r + "= " + kd.range(r));
   }
 
   private static class Node
