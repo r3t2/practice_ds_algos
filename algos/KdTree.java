@@ -2,7 +2,6 @@ import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -94,7 +93,7 @@ public class KdTree
 
     if(r.contains(n.p)) q.offer(n.p);
 
-    if(n.d == 1)
+    if(n.d == 0)
     {
       if(r.xmin() <= n.p.x()) range(n.left, r, q);
       if(r.xmax() >= n.p.x()) range(n.right, r, q);
@@ -125,45 +124,70 @@ public class KdTree
 
   	if(n.p.equals(p)) return n.p; // if the point in current node equals p, then return n.p;
 
-  	double sDist;
-  	if(n.d == 0) sDist = Math.pow(p.x() - n.p.x(), 2);
-  	else sDist = Math.pow(p.y() - n.p.y(), 2);
+
   	
   	Comparator<Point2D> comp;
 
   	if(n.d == 0) comp = Point2D.X_ORDER;
   	else comp = Point2D.Y_ORDER;
 
-  	Point2D retP;
+  	
   	if(comp.compare(p, n.p) < 0)
   	{
-  		retP = nearest(n.left, p);
-  		if(retP!=null && retP.distanceSquaredTo(p) < sDist)
-  		{
-  			return retP;
-  		}
-  		else
-  		{
-  			retP = nearest(n.right, p);
-  			if(retP!=null && retP.distanceSquaredTo(p) < n.p.distanceSquaredTo(p)) return retP;
-  			else return n.p;
-  		}
+  		return nearestCompareLogic(n, n.left, n.right, p);
   	}
   	else
   	{
-  		retP = nearest(n.right, p);
-  		if(retP!=null && retP.distanceSquaredTo(p) < sDist)
-  		{
-  			return retP;
-  		}
-  		else
-  		{
-  			retP = nearest(n.left, p);
-  			if(retP!=null && retP.distanceSquaredTo(p) < n.p.distanceSquaredTo(p)) return retP;
-  			else return n.p;
-  		}
+  		return nearestCompareLogic(n, n.right, n.left, p);
   	}
 
+  }
+
+  private Point2D nearestCompareLogic(Node n, Node tryFirst, Node trySecond, Point2D query)
+  {
+  	double sDist;
+
+  	if(n.d == 0) sDist = Math.pow(query.x() - n.p.x(), 2);
+  	else sDist = Math.pow(query.y() - n.p.y(), 2);
+
+  	Point2D retP1, retP2;
+  	
+  	retP1 = nearest(tryFirst, query);
+	if((retP1!=null) && (retP1.distanceSquaredTo(query) < sDist))
+	{
+		return retP1;
+	}
+	else
+	{
+		retP2 = nearest(trySecond, query);
+	}
+
+	return min3Points(query, n.p, retP1, retP2);
+  }
+
+  private Point2D min3Points(Point2D query, Point2D p1, Point2D p2, Point2D p3)
+  {
+  	Double s1, s2, s3;
+
+  	if(p1 != null) s1 = query.distanceSquaredTo(p1);
+  	else s1 = Double.POSITIVE_INFINITY;
+
+  	if(p2 != null) s2 = query.distanceSquaredTo(p2);
+  	else s2 = Double.POSITIVE_INFINITY;
+
+  	if(p3 != null) s3 = query.distanceSquaredTo(p3);
+  	else s3 = Double.POSITIVE_INFINITY;
+
+  	if(s1 < s2)
+  	{
+  		if(s1 < s3) return p1;
+  		else return p3;
+  	}
+  	else
+  	{
+  		if(s2 < s3) return p2;
+  		else return p3;
+  	}
   }
 
 
@@ -231,7 +255,7 @@ public class KdTree
   	p = new Point2D(0.26, 0.26); System.out.println("nearest to" + p + "=" + kd.nearest(p));
   	p = new Point2D(0.66, 0.26); System.out.println("nearest to" + p + "=" + kd.nearest(p));
   	p = new Point2D(0.23, 0.23); System.out.println("nearest to" + p + "=" + kd.nearest(p));
-  	p = new Point2D(0.78, 0.78); System.out.println("nearest to" + p + "=" + kd.nearest(p));
+  	p = new Point2D(0.26, 0.01); System.out.println("nearest to" + p + "=" + kd.nearest(p));
 
   	p = new Point2D(0.75, 0.75); System.out.println("contains " + p + "?=" + kd.contains(p));
   	p = new Point2D(0.25, 0.5); System.out.println("contains " + p + "?=" + kd.contains(p));
