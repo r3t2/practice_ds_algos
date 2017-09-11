@@ -10,8 +10,10 @@ public class PercolationStats
 	// perform trials independent experiments on an n-by-n grid
 	private double[] fracOpenSites;
 
-	public PercolationStats(int n, int trials)
+	public PercolationStats(int n, int trials) throws Exception
 	{
+		if(n<=0 || trials<=0) throw new IllegalArgumentException();
+		
 		fracOpenSites = new double[trials];
 
 		for(int i=0; i<trials; i++)
@@ -23,12 +25,13 @@ public class PercolationStats
 		calcStats();
 	}
 
-	private void runTrial(int n)
+	private void runTrial(int n) throws Exception
 	{
 		Percolation p = new Percolation(n);
 		while(!p.percolates())
 		{
-			p.open(rand.nextInt(n), rand.nextInt(n));
+			/* valid range is 1 - n */
+			p.open(rand.nextInt(n)+1, rand.nextInt(n)+1);
 		}
 
 		fracOpenSites[trialNum] = p.numberOfOpenSites()/((double) n*n);
@@ -92,7 +95,7 @@ public class PercolationStats
 		return confHi;
 	}
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{
 		int n = Integer.parseInt(args[0]);
 		int trials = Integer.parseInt(args[1]);
