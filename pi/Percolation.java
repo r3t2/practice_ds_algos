@@ -1,9 +1,9 @@
-import edu.princeton.cs.algs4.UF;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 
 public class Percolation
 {
-	private static final boolean CLOSE = false;
+	private static final boolean BLOCKED = false;
 	private static final boolean OPEN = true;
 
 	private static int HEAD;
@@ -13,7 +13,7 @@ public class Percolation
 
 	private boolean [][] grid; /*n x n grid*/
 
-	private UF uf; /*reference to the union find datastructure*/
+	private WeightedQuickUnionUF uf; /*reference to the union find datastructure*/
 
 	private int numOpen = 0;
 
@@ -23,7 +23,7 @@ public class Percolation
 
 		this.n = n;
 
-		uf = new UF(n*n+2);
+		uf = new WeightedQuickUnionUF(n*n+2);
 		HEAD = n*n;
 		TAIL = n*n+1;
 
@@ -34,7 +34,7 @@ public class Percolation
 		{
 			for(int j=1; j<=n; j++)
 			{
-				grid[i][j] = CLOSE;
+				grid[i][j] = BLOCKED;
 			}
 		}
 
@@ -52,24 +52,24 @@ public class Percolation
 	}
 
 	/*open site (row, col) if it is not open already*/
-	public void open(int row, int col) throws Exception
+	public void open(int row, int col)
 	{
 		check(row, col);
 
-		if(grid[row][col] == CLOSE)
+		if(grid[row][col] == BLOCKED)
 		{
 			grid[row][col] = OPEN;
 			numOpen++;
 		}
 
-		if((row-1) > 0 && grid[row-1][col] == OPEN) uf.union(grid2LinIdx(row-1, col), grid2LinIdx(row, col));
-		if((row+1) < n && grid[row+1][col] == OPEN) uf.union(grid2LinIdx(row+1, col), grid2LinIdx(row, col));
-		if((col-1) > 0 && grid[row][col-1] == OPEN) uf.union(grid2LinIdx(row, col-1), grid2LinIdx(row, col));
-		if((col+1) < n && grid[row][col+1] == OPEN) uf.union(grid2LinIdx(row, col+1), grid2LinIdx(row, col));
+		if((row-1) >= 1 && grid[row-1][col] == OPEN) uf.union(grid2LinIdx(row-1, col), grid2LinIdx(row, col));
+		if((row+1) <= n && grid[row+1][col] == OPEN) uf.union(grid2LinIdx(row+1, col), grid2LinIdx(row, col));
+		if((col-1) >= 1 && grid[row][col-1] == OPEN) uf.union(grid2LinIdx(row, col-1), grid2LinIdx(row, col));
+		if((col+1) <= n && grid[row][col+1] == OPEN) uf.union(grid2LinIdx(row, col+1), grid2LinIdx(row, col));
 	}
 
 	/*is site (row, col) open?*/
-	public boolean isOpen(int row, int col) throws Exception
+	public boolean isOpen(int row, int col)
 	{
 		check(row, col);
 
@@ -77,10 +77,10 @@ public class Percolation
 	}
 	
 	/* is site (row, col) full? */
-	public boolean isFull(int row, int col) throws Exception
+	public boolean isFull(int row, int col)
 	{
 		check(row, col);
-		return grid[row][col] == CLOSE;
+		return isOpen(row, col) && uf.connected(HEAD, grid2LinIdx(row,col));
 	}
 
 	// number of open sites
@@ -95,7 +95,7 @@ public class Percolation
 		return uf.connected(HEAD, TAIL);
 	}
 
-	private void check(int row, int col) throws Exception
+	private void check(int row, int col)
 	{
 		if(row<1 || row>n || col<1 || col>n) throw new java.lang.IllegalArgumentException(String.format("Operation on row = %d, col = %d not permitted", row, col));
 	}
@@ -106,7 +106,7 @@ public class Percolation
 
 
 
-	public static void main(String[] args) throws Exception
+	public static void main(String[] args)
 	{
 		Percolation p = new Percolation(5);
 		System.out.println(p.percolates());
