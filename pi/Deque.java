@@ -1,6 +1,7 @@
 import java.util.Iterator;
-import java.util.Scanner;
+// import java.util.Scanner;
 import java.util.NoSuchElementException;
+import edu.princeton.cs.algs4.StdIn;
 
 public class Deque<E> implements Iterable<E>
 {
@@ -127,13 +128,13 @@ public class Deque<E> implements Iterable<E>
 
 	public static void main(String[] args)
 	{
-		Scanner sc = new Scanner (System.in);
+		String [] strs = StdIn.readAllStrings();
 
 		Deque<String> d = new Deque<String> ();
 
-		while(sc.hasNext())
+		for(String str: strs)
 		{
-			d.addLast(sc.next());
+			d.addLast(str);
 		}
 
 		System.out.println(d.toString());

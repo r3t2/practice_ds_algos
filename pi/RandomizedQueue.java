@@ -1,8 +1,9 @@
 import java.util.Random;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
+// import java.util.Scanner;
 import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdIn;
 
 public class RandomizedQueue<E> implements Iterable<E>
 {
@@ -99,13 +100,13 @@ public class RandomizedQueue<E> implements Iterable<E>
 
 	public static void main(String[] args)
 	{
-		Scanner sc = new Scanner(System.in);
+		String [] strs = StdIn.readAllStrings();
 
 		RandomizedQueue<String> r = new RandomizedQueue<String>();
 
-		while(sc.hasNext())
+		for(String str: strs)
 		{
-			r.enqueue(sc.next());
+			r.enqueue(str);
 		}
 
 		System.out.println("Printing in sequence:");
