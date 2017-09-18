@@ -5,10 +5,10 @@ import java.util.NoSuchElementException;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdIn;
 
-public class RandomizedQueue<E> implements Iterable<E>
+public class RandomizedQueue<Item> implements Iterable<Item>
 {
 
-	private E [] arr;
+	private Item [] arr;
 	private int size = 0;
 	private Random rand = new Random();
 	private static final int INIT_SIZE = 4;
@@ -16,7 +16,7 @@ public class RandomizedQueue<E> implements Iterable<E>
 
 	public RandomizedQueue()
 	{
-		arr = (E[]) new Object[INIT_SIZE];
+		arr = (Item[]) new Object[INIT_SIZE];
 	}
 
 	public int size()
@@ -29,19 +29,21 @@ public class RandomizedQueue<E> implements Iterable<E>
 		return size==0;
 	}
 
-	public void enqueue(E e)
+	public void enqueue(Item e)
 	{
+		if(e == null) throw new IllegalArgumentException();
+		
 		arr[size++] = e;
 		resize();
 	}
 
-	public E dequeue()
+	public Item dequeue()
 	{
 		if(size == 0) throw new NoSuchElementException();
 
 		int randIdx = rand.nextInt(size);
 		
-		E e = arr[randIdx];
+		Item e = arr[randIdx];
 		arr[randIdx] = arr[size-1];
 		size--;
 		
@@ -52,10 +54,10 @@ public class RandomizedQueue<E> implements Iterable<E>
 
 	private void resize()
 	{
-		E [] newArr;
-		if(size == arr.length) newArr = (E[]) new Object[2*arr.length];
+		Item [] newArr;
+		if(size == arr.length) newArr = (Item[]) new Object[2*arr.length];
 
-		else if(size < arr.length/4) newArr = (E[]) new Object[arr.length/4];
+		else if(size < arr.length/4) newArr = (Item[]) new Object[arr.length/4];
 
 		else return;
 
@@ -68,7 +70,7 @@ public class RandomizedQueue<E> implements Iterable<E>
 		return;
 	}
 
-	public E sample()
+	public Item sample()
 	{
 		if(size == 0) throw new NoSuchElementException();
 
@@ -76,7 +78,7 @@ public class RandomizedQueue<E> implements Iterable<E>
 		return arr[randIdx];
 	}
 
-	public Iterator<E> iterator()
+	public Iterator<Item> iterator()
 	{
 		return new RandomIterator();
 	}
@@ -129,14 +131,14 @@ public class RandomizedQueue<E> implements Iterable<E>
 
 	}
 
-	private class RandomIterator implements Iterator<E>
+	private class RandomIterator implements Iterator<Item>
 	{
-		private E [] itArr;
+		private Item [] itArr;
 		private int nextIdx = 0;
 
 		private RandomIterator()
 		{
-			itArr = (E[]) new Object[size];
+			itArr = (Item[]) new Object[size];
 
 			for(int i=0; i < size; i++)
 			{
@@ -146,7 +148,7 @@ public class RandomizedQueue<E> implements Iterable<E>
 			shuffle(itArr);
 		}
 
-		private void shuffle(E[] x)
+		private void shuffle(Item[] x)
 		{
 			int randIdx;
 			for(int i=0; i<x.length; i++)
@@ -156,9 +158,9 @@ public class RandomizedQueue<E> implements Iterable<E>
 			}
 		}
 
-		private void exch(E[] x, int i, int j)
+		private void exch(Item[] x, int i, int j)
 		{
-			E temp = x[i];
+			Item temp = x[i];
 			x[i] = x[j];
 			x[j] = temp;
 		}
@@ -168,7 +170,7 @@ public class RandomizedQueue<E> implements Iterable<E>
 			return nextIdx < itArr.length;
 		}
 
-		public E next()
+		public Item next()
 		{
 			if(!hasNext()) throw new NoSuchElementException();
 

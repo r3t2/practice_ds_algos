@@ -3,7 +3,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import edu.princeton.cs.algs4.StdIn;
 
-public class Deque<E> implements Iterable<E>
+public class Deque<Item> implements Iterable<Item>
 {
 	private Node head;
 	private Node tail;
@@ -21,13 +21,13 @@ public class Deque<E> implements Iterable<E>
 	}
 
 	// is the deque empty
-	private boolean isEmpty()
+	public boolean isEmpty()
 	{
 		return size==0;
 	}
 
 	// Add the element to the start of the deque
-	public void addFirst(E e)
+	public void addFirst(Item e)
 	{
 		if(e == null) throw new IllegalArgumentException();
 
@@ -46,7 +46,7 @@ public class Deque<E> implements Iterable<E>
 	}
 
 	// Add the element to the end of the deque
-	public void addLast(E e)
+	public void addLast(Item e)
 	{
 		if(e == null) throw new IllegalArgumentException();
 
@@ -65,7 +65,7 @@ public class Deque<E> implements Iterable<E>
 	}
 
 	// Remove the element from the start of the queue
-	public E removeFirst()
+	public Item removeFirst()
 	{
 		if(size == 0) throw new NoSuchElementException();
 
@@ -87,7 +87,7 @@ public class Deque<E> implements Iterable<E>
 	}
 
 	// Remove the element from the tail of the queue
-	public E removeLast()
+	public Item removeLast()
 	{
 		if(size == 0) throw new NoSuchElementException();
 
@@ -106,7 +106,7 @@ public class Deque<E> implements Iterable<E>
 	}
 
 	// returns an iterator in order from front to last.
-	public Iterator<E> iterator()
+	public Iterator<Item> iterator()
 	{
 		return new ForwardIterator();
 	}
@@ -146,16 +146,16 @@ public class Deque<E> implements Iterable<E>
 
 	private class Node
 	{
-		private E e;
+		private Item e;
 		private Node next = null;
 		private Node prev = null;
 
-		private Node(E e)
+		private Node(Item e)
 		{
 			this.e = e;
 		}
 
-		private Node(E e, Node next, Node prev)
+		private Node(Item e, Node next, Node prev)
 		{
 			this.e = e;
 			this.next = next;
@@ -163,7 +163,7 @@ public class Deque<E> implements Iterable<E>
 		}
 	}
 
-	private class ForwardIterator implements Iterator<E>
+	private class ForwardIterator implements Iterator<Item>
 	{
 		private Node i = head;
 
@@ -172,11 +172,11 @@ public class Deque<E> implements Iterable<E>
 			return i != null;
 		}
 
-		public E next()
+		public Item next()
 		{
 			if(!hasNext()) throw new NoSuchElementException();
 
-			E e = i.e;
+			Item e = i.e;
 			i = i.next;
 			return e;
 		}
