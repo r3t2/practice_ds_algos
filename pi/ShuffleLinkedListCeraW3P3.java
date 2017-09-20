@@ -45,13 +45,17 @@ public class ShuffleLinkedListCeraW3P3<Item>
 	private Node shuffleMerge(Node n1, Node n2, int nSize1, int nSize2)
 	{
 		int i1 = 0, i2 = 0;
-		int randVal;
+		int randVal, headTail;
 		Node newHead = null, ni = null;
+
+		//Proof of Concept hack to check uniformity in randomness;
+		Deque<Node> d = new Deque<Node>();
 
 		while(i1 < nSize1 && i2 < nSize2)
 		{
 			randVal = rand.nextInt(2);
-			if(ni == null)
+			headTail = rand.nextInt(2);
+			/*if(ni == null)
 			{
 				if(randVal == 0)
 				{
@@ -68,35 +72,60 @@ public class ShuffleLinkedListCeraW3P3<Item>
 				newHead = ni;
 			}
 
-			else if(randVal == 0)
+			else if(randVal == 0)*/
+			if(randVal == 0)
 			{
-				ni.next = n1;
+				if(headTail == 0) d.addFirst(n1);
+				else d.addLast(n1);
+				//ni.next = n1;
 				n1 = n1.next;
-				ni = ni.next;
+				//ni = ni.next;
 				i1++;
 			}
 			else
 			{
-				ni.next = n2;
+				if(headTail == 0) d.addFirst(n2);
+				else d.addLast(n2);
+				// ni.next = n2;
 				n2 = n2.next;
-				ni = ni.next;
+				// ni = ni.next;
 				i2++;
 			}
 		}
 
 		while(i1 < nSize1)
 		{
-			ni.next = n1;
+			headTail = rand.nextInt(2);
+			if(headTail == 0) d.addFirst(n1);
+			else d.addLast(n1);
+			// ni.next = n1;
 			n1 = n1.next;
-			ni = ni.next;
+			// ni = ni.next;
 			i1++;
 		}
 		while(i2 < nSize2)
 		{
-			ni.next = n2;
+			headTail = rand.nextInt(2);
+			if(headTail == 0) d.addFirst(n2);
+			else d.addLast(n2);
+			// ni.next = n2;
 			n2 = n2.next;
-			ni = ni.next;
+			// ni = ni.next;
 			i2++;
+		}
+
+		for(Node n : d)
+		{
+			if(ni == null)
+			{
+				ni = n;
+				newHead = ni;
+			}
+			else
+			{
+				ni.next = n;
+				ni = ni.next;
+			}
 		}
 
 		ni.next = null;
@@ -135,7 +164,7 @@ public class ShuffleLinkedListCeraW3P3<Item>
 	{
 		runTest(new int[]{4, 3, 2, 1});
 
-		runTest(new int[]{100, 90, 80, 7, 6, 5, 4, 3, 2, 1});
+		runTest(new int[]{1000000, 90, 80, 7, 6, 5, 4, 3, 2, 1});
 	}
 
 	private static void runTest(int [] x)
@@ -144,7 +173,7 @@ public class ShuffleLinkedListCeraW3P3<Item>
 		Integer[] acc = new Integer[N];
 		for(int i=0; i<N; i++) acc[i] = 0;
 
-		for(int cnt = 0; cnt<100; cnt++)
+		for(int cnt = 0; cnt<1000; cnt++)
 		{
 		
 			ShuffleLinkedListCeraW3P3<Integer> s = new ShuffleLinkedListCeraW3P3<Integer>();
@@ -161,7 +190,7 @@ public class ShuffleLinkedListCeraW3P3<Item>
 
 			for(int i=0; i<N; i++) acc[i] += out[i];
 
-			try {Thread.sleep(5); }// sleep 2 ms.
+			try {Thread.sleep(1); }// sleep 2 ms.
 			catch(Exception e) {e.printStackTrace();}
 		}
 
