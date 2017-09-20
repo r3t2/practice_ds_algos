@@ -1,4 +1,5 @@
 import java.util.Random; 
+import java.util.Arrays;
 /** 
 3.  Shuffling a linked list. Given a singly-linked list containing n
 items, rearrange the items uniformly at random. Your algorithm should consume a logarithmic (or
@@ -120,23 +121,52 @@ public class ShuffleLinkedListCeraW3P3<Item>
 		return sb.toString();
 	}
 
+	public void toArray(Item[] x)
+	{
+		Node n = head;
+		for(int i=0; i<size; i++)
+		{
+			x[i] = n.e;
+			n = n.next;
+		}
+	}
+
 	public static void main(String [] args)
 	{
 		runTest(new int[]{4, 3, 2, 1});
 
-		runTest(new int[]{10, 9, 8, 7, 6, 5, 4, 3, 2, 1});
+		runTest(new int[]{100, 90, 80, 7, 6, 5, 4, 3, 2, 1});
 	}
 
 	private static void runTest(int [] x)
 	{
-		ShuffleLinkedListCeraW3P3<Integer> s = new ShuffleLinkedListCeraW3P3<Integer>();
-		for(int i: x) s.addFirst(i);
+		int N = x.length;
+		Integer[] acc = new Integer[N];
+		for(int i=0; i<N; i++) acc[i] = 0;
 
-		System.out.println("before shuffle =" + s.toString());
+		for(int cnt = 0; cnt<100; cnt++)
+		{
+		
+			ShuffleLinkedListCeraW3P3<Integer> s = new ShuffleLinkedListCeraW3P3<Integer>();
+			for(int i: x) s.addFirst(i);
 
-		s.shuffle();
+			//System.out.println("before shuffle =" + s.toString());
 
-		System.out.println("after shuffle  =" + s);
+			s.shuffle();
+
+			//System.out.println("after shuffle  =" + s);
+			
+			Integer[] out = new Integer[x.length];
+			s.toArray(out);
+
+			for(int i=0; i<N; i++) acc[i] += out[i];
+
+			try {Thread.sleep(5); }// sleep 2 ms.
+			catch(Exception e) {e.printStackTrace();}
+		}
+
+		System.out.println(Arrays.toString(acc));
+
 
 	}
 
