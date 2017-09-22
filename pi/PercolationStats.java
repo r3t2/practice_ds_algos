@@ -1,8 +1,7 @@
-import java.util.Random;
+import edu.princeton.cs.algs4.StdRandom;
 
 public class PercolationStats
 {
-	private Random rand = new Random();
 
 	private int trialNum = 0;
 
@@ -10,7 +9,7 @@ public class PercolationStats
 	// perform trials independent experiments on an n-by-n grid
 	private double[] fracOpenSites;
 
-	public PercolationStats(int n, int trials) throws Exception
+	public PercolationStats(int n, int trials)
 	{
 		if(n<=0 || trials<=0) throw new IllegalArgumentException();
 		
@@ -25,13 +24,13 @@ public class PercolationStats
 		calcStats();
 	}
 
-	private void runTrial(int n) throws Exception
+	private void runTrial(int n)
 	{
 		Percolation p = new Percolation(n);
 		while(!p.percolates())
 		{
 			/* valid range is 1 - n */
-			p.open(rand.nextInt(n)+1, rand.nextInt(n)+1);
+			p.open(StdRandom.uniform(1, n+1), StdRandom.uniform(1, n+1));
 		}
 
 		fracOpenSites[trialNum] = p.numberOfOpenSites()/((double) n*n);
@@ -80,7 +79,7 @@ public class PercolationStats
 		return mean;
 	}
 
-	public double stdDev()
+	public double stddev()
 	{
 		return stdDev;
 	}
@@ -95,7 +94,7 @@ public class PercolationStats
 		return confHi;
 	}
 
-	public static void main(String[] args) throws Exception
+	public static void main(String[] args)
 	{
 		int n = Integer.parseInt(args[0]);
 		int trials = Integer.parseInt(args[1]);
@@ -103,7 +102,7 @@ public class PercolationStats
 		PercolationStats ps = new PercolationStats(n, trials);
 
 		System.out.println("mean = " + ps.mean());
-		System.out.println("stdDev = " + ps.stdDev());
+		System.out.println("stdDev = " + ps.stddev());
 		System.out.println(String.format("95pct confidence interval = [%f, %f]", ps.confidenceLo(), ps.confidenceHi()));
 	}
 }
