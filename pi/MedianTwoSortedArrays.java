@@ -7,7 +7,7 @@ as the average of the central two elements.
 
 import java.util.Arrays;
 
-public class MedianFinder
+public class MedianTwoSortedArrays
 {
 
 	public static int medianLinearBrute(int [] a, int [] b)
