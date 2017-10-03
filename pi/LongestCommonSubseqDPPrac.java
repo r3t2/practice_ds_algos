@@ -18,6 +18,8 @@ public class LongestCommonSubseqDPPrac
 
         int [][] px = new int [nX][nY], py = new int [nX][nY];
 
+        int val;
+
         for(int iX = 0; iX < nX; iX++)
         {
             for(int iY = 0; iY < nY; iY++)
@@ -31,7 +33,12 @@ public class LongestCommonSubseqDPPrac
                     }
                     else
                     {
-                        sol[iX][iY] = 0;
+                        if(iX == 0 && iY == 0) val = 0;
+                        else if(iX == 0) val = sol[iX][iY-1];
+                        else val = sol[iX-1][iY];
+
+                        sol[iX][iY] = val;
+
                         if(iX == 0) { px[iX][iY] = iX; py[iX][iY] = iY-1; }
                         else { px[iX][iY] = iX-1; py[iX][iY] = iY; }
                     }
@@ -93,7 +100,7 @@ public class LongestCommonSubseqDPPrac
 
         runTest("ahhbcedlelo", "xyhzewlxlyoz");
 
-        //runTest("axbyczd", "awbcd");
+        runTest("axbyczd", "awbcd");
 
         runTest("abcd", "efgh");
 
