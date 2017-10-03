@@ -21,39 +21,30 @@ length 6.
 
 public class LongestCommonSubstringDPPrac
 {
-    public String longestCommonSubstringDP(String X, String Y)
+    public static String longestCommonSubstringDP(String X, String Y)
     {
-        int nX = X.size();
-        int nY = Y.size();
+        int nX = X.length();
+        int nY = Y.length();
 
         int max=0, maxX=-1, maxY=-1;
 
         int[][] sol = new int[nX][nY];
-        for(iX=0; iX<nX; iX++)
-        {
-            if(X.charAt[iX] == Y.charAt[0]) sol[iX][0] = 1;
-            else    sol[iX][0] = 0;
-            if(max < sol[iX][0])
-            {
-                max = sol[iX][0]; maxX = iX; maxY = 0;
-            }
-        }
-        for(iY = 0; iY<nY; iY++)
-        {
-            if(X.charAt[0] == Y.charAt[iY]) sol[0][iY] = 1;
-            sol[0][iY] = 0;
-            if(max < sol[0][iY])
-            {
-                max = sol[0][iY]; maxX = 0; maxY = iY;
-            }
-        }
 
-        for(iX = 1; iX<nX; iX++)
+        for(int iX = 0; iX<nX; iX++)
         {
-            for(iY = 1; iY<nY; iY++)
+            for(int iY = 0; iY<nY; iY++)
             {
-                if(X.charAt[iX] == Y.charAt[iY]) sol[iX][iY] = sol[iX-1][iY-1] + 1;
-                else sol[iX][iY] = 0;
+                if(iX == 0 || iY == 0)
+                {
+                    if(X.charAt(iX) == Y.charAt(iY)) sol[iX][iY] = 1;
+                    else sol[iX][iY] = 0;
+                }
+                else
+                {
+                    if(X.charAt(iX) == Y.charAt(iY)) sol[iX][iY] = sol[iX-1][iY-1] + 1;
+                    else sol[iX][iY] = 0;
+                }
+
                 if(max < sol[iX][iY])
                 {
                     max = sol[iX][iY]; maxX = iX; maxY = iY;
@@ -61,17 +52,38 @@ public class LongestCommonSubstringDPPrac
             }
         }
 
-        if(maxX == -1) return null;
+
+        if(maxX == -1) return "";
         else
         {
-            return X.subString(maxX - max + 1, maxX);
+            return X.substring(maxX - max + 1, maxX+1);
         }
 
     }
 
     public static void main(String [] args)
     {
-        
+        runTest("abcdhelloxyz", "mnhellow");
+
+        runTest("GeeksforGeeks", "GeeksQuiz");
+
+        runTest("abcd", "efgh");
+
+        runTest("abcd", "abcd");
+
+        runTest("a", "a");
+
+        runTest("a", "b");
+
+        runTest("", "b");
+
+        runTest("", "");
+    }
+
+    private static void runTest(String X, String Y)
+    {
+        System.out.printf("str1 = %s, str2 = %s, lcSubString = %s\n",
+            X, Y, LongestCommonSubstringDPPrac.longestCommonSubstringDP(X,Y));
     }
 
 }
