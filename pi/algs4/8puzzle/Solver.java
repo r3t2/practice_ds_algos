@@ -68,13 +68,15 @@ public class Solver
     private SolverState(Board init)
     {
       // System.out.println("board = " + init);
-      pq.insert(new SolverBoardStep(init.manhattan() + numSteps, init));
+      pq.insert(new SolverBoardStep(init.manhattan() + numSteps, init, null));
     }
 
     private void step()
     {
+      SolverBoardStep min = pq.delMin();
 
-      Board minBoard = pq.delMin().board;
+      Board minBoard = min.board;
+      Board prevBoard = min.prevBoard;
 
       path.addLast(minBoard);
 
@@ -83,10 +85,12 @@ public class Solver
       else
       {
         numSteps++;
+
         for(Board b: minBoard.neighbors())
         {
-          if(!b.equals(minBoard))
-            pq.insert(new SolverBoardStep(b.manhattan() + numSteps, b));
+          if(b.equals(prevBoard)) continue;
+          
+          pq.insert(new SolverBoardStep(b.manhattan() + numSteps, b, minBoard));
         }
       }
     }
@@ -96,10 +100,12 @@ public class Solver
   {
     private int dist;
     private Board board;
-    private SolverBoardStep(int dist, Board board)
+    private Board prevBoard;
+    private SolverBoardStep(int dist, Board board, Board prevBoard)
     {
       this.dist = dist;
       this.board = board;
+      this.prevBoard = prevBoard;
     }
 
     public int compareTo(SolverBoardStep that)
