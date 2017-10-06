@@ -10,6 +10,8 @@ public class Solver
   // find a solution to the initial board (using the A* algorithm)
   public Solver(Board initial)
   {
+    if(initial == null) throw new IllegalArgumentException();
+    
     Board twin = initial.twin();
     SolverState actualProb = new SolverState(initial);
     SolverState twinProb = new SolverState(twin);
@@ -19,11 +21,11 @@ public class Solver
 
     int cnt = 0;
 
-    while(cnt < 10000000 && actualProb.solved == false && twinProb.solved == false)
+    while(actualProb.solved == false && twinProb.solved == false)
     {
       actualProb.step();
       twinProb.step();
-      cnt++;
+      //cnt++;
       // System.out.println("------------------");
     }
 

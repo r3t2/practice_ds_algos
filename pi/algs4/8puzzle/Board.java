@@ -15,6 +15,8 @@ public class Board
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks)                                       
     {
+      if(blocks == null) throw new IllegalArgumentException();
+
       this.n = blocks.length;
 
       this.blocks = new int[n][n];
