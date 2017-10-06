@@ -1,3 +1,6 @@
+import java.util.Deque;
+import java.util.LinkedList;
+
 public class Board
 {
     private int[][] blocks; //
@@ -28,7 +31,6 @@ public class Board
           }
         }
       }
-      this.blocks[n-1][n-1] = 0;
 
       computeHammingDist();
       computeManhattanDist();
@@ -36,12 +38,39 @@ public class Board
 
     private void computeHammingDist()
     {
-      
+      int cnt = 0;
+
+      for(int i=0; i<n; i++)
+      {
+        for(int j=0; j<n; j++)
+        {
+          if((blocks[i][j] !=0) && (blocks[i][j] != target(i,j))) cnt++;
+        }
+      }
+
+      this.hDist = cnt;
     }
 
     private void computeManhattanDist()
     {
+      int cnt = 0, val, tx, ty;
 
+      for(int i=0; i<n; i++)
+      {
+        for(int j=0; j<n; j++)
+        {
+          val = blocks[i][j];
+          if(val == 0) continue;
+
+          tx = (val-1) / n;
+          ty = (val-1) % n;
+
+          cnt += ( Math.abs(tx - i) + Math.abs(ty - j) );
+
+        }
+      }
+
+      this.mDist = cnt;
     }
 
     // board dimension n
@@ -83,33 +112,54 @@ public class Board
       return r*n + c + 1;
     }
 
-    // a board that is obtained by exchanging any pair of blocks
-    public Board twin()
+    private int[][] copy(int [][] in)
     {
-      int [][] twinBlocks = new int[n][n];
-      for(int i=0; i<n; i++)
+      int numRows = in.length;
+      int numCols = in[0].length;
+      int [][] out = new int [numRows][numCols];
+
+      for(int i=0; i<numRows; i++)
       {
-        for(int j=0; j<n; j++)
+        for(int j=0; j<numCols; j++)
         {
-          twinBlocks[i][j] = blocks[i][j];
+          out[i][j] = in[i][j];
         }
       }
 
-      int tmp;
-      if(twinBlocks[0][0] != 0 && twinBlocks[0][1] != 0)
+      return out;
+    }
+
+    // a board that is obtained by exchanging any pair of blocks
+    public Board twin()
+    {
+      if(blocks[0][0] != 0 && blocks[0][1] != 0)
       {
-        tmp = twinBlocks[0][0];
-        twinBlocks[0][0] = twinBlocks[0][1];
-        twinBlocks[0][1] = tmp;
+        return twin(0, 0, 0, 1);
       }
       else
       {
-        tmp = twinBlocks[n-1][n-1];
-        twinBlocks[n-1][n-1] = twinBlocks[n-1][n-2];
-        twinBlocks[n-1][n-2] = tmp; 
+        return twin(n-1, n-1, n-1, n-2);
       }
+    }
 
+    // twin board obtained by exchanging tile at (x0, y0) with (x1, y1)
+    private Board twin(int x0, int y0, int x1, int y1)
+    {
+      if(x0 < 0 || x0 >=n) return null;
+      if(y0 < 0 || y0 >=n) return null;
+      if(x1 < 0 || x1 >=n) return null;
+      if(y1 < 0 || y1 >=n) return null;
+
+      int [][] twinBlocks = copy(blocks);
+      exch(twinBlocks, x0, y0, x1, y1);
       return new Board(twinBlocks);
+    }
+
+    private void exch(int[][] arr, int x0, int y0, int x1, int y1)
+    {
+      int tmp = arr[x1][y1];
+      arr[x1][y1] = arr[x0][y0];
+      arr[x0][y0] = tmp;
     }
 
     // does this board equal y?
@@ -138,7 +188,15 @@ public class Board
     // all neighboring boards
     public Iterable<Board> neighbors()
     {
-      return null;
+      Deque<Board> n = new LinkedList<Board>();
+      Board b;
+
+      b = twin(zx, zy, zx-1, zy); if(b != null) n.addFirst(b);
+      b = twin(zx, zy, zx+1, zy); if(b != null) n.addFirst(b);
+      b = twin(zx, zy, zx, zy-1); if(b != null) n.addFirst(b);
+      b = twin(zx, zy, zx, zy+1); if(b != null) n.addFirst(b);
+
+      return n;
     }
 
     // string representation of this board (in the output format specified below)
@@ -158,6 +216,18 @@ public class Board
     // unit tests (not graded)
     public static void main(String[] args)
     {
+      runTest(new int[][] { {8,1,3}, {4,0,2}, {7,6,5} });
+    }
 
+    private static void runTest(int[][] blocks)
+    {
+      Board b = new Board(blocks);
+      System.out.println("input = \n" + b);
+      System.out.println("\neighbors = \n" + b.neighbors());
+      System.out.println("hamming = " + b.hamming());
+      System.out.println("manhattan = " + b.manhattan());
+      System.out.println("isGoal = " + b.isGoal());
+      System.out.println("\ntwin = \n" + b.twin());
+      System.out.println("\n");
     }
 }
