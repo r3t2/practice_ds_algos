@@ -217,6 +217,9 @@ public class Board
     public static void main(String[] args)
     {
       runTest(new int[][] { {8,1,3}, {4,0,2}, {7,6,5} });
+      runTest(new int[][] { {1,2,3}, {0,7,6}, {5,4,8} });
+      runTest(new int[][] { {0,1,2}, {4,2,5}, {7,8,6} });
+      runTest(new int[][] { {1,2,3}, {0,7,6}, {5,4,8} });
     }
 
     private static void runTest(int[][] blocks)

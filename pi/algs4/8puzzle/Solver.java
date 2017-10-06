@@ -18,18 +18,20 @@ public class Solver
     // System.out.println("twin = " + twin);
 
     int cnt = 0;
+
     while(cnt < 10000000 && actualProb.solved == false && twinProb.solved == false)
     {
       actualProb.step();
       twinProb.step();
       cnt++;
+      // System.out.println("------------------");
     }
 
 
     if(actualProb.solved == true)
     {
       solutionPath = actualProb.path;
-      numMoves = actualProb.numSteps;
+      numMoves = actualProb.numMovesPath;
     }
     else
     {
@@ -61,51 +63,86 @@ public class Solver
   private class SolverState
   {
     private MinPQ<SolverBoardStep> pq = new MinPQ<SolverBoardStep> ();
-    private int numSteps = 0;
     private boolean solved = false;
-    private Deque<Board> path = new LinkedList<Board> ();
+    private Deque<Board> path;
+    private int numMovesPath;
 
     private SolverState(Board init)
     {
       // System.out.println("board = " + init);
-      pq.insert(new SolverBoardStep(init.manhattan() + numSteps, init, null));
+      pq.insert(new SolverBoardStep(0, init, null));
     }
 
     private void step()
     {
+      //printpq(pq);
+
       SolverBoardStep min = pq.delMin();
-
       Board minBoard = min.board;
-      Board prevBoard = min.prevBoard;
+      Board prevBoard = min.prev == null ? null : min.prev.board;
 
-      path.addLast(minBoard);
+      // System.out.println("path.size = " + path.size() + ", enq moves = " + min.moves);
+      // while(!path.isEmpty() && path.size() > min.moves)
+      // {
+      //   path.removeLast();
+      // }
 
-      if(minBoard.isGoal()) solved = true;
+      // path.addLast(minBoard);
+      // numMovesPath = path.size();
+
+      if(minBoard.isGoal())
+      {
+        solved = true;
+        path = getPath(min);
+        numMovesPath = path.size() - 1;
+      }
       
       else
       {
-        numSteps++;
-
         for(Board b: minBoard.neighbors())
         {
           if(b.equals(prevBoard)) continue;
           
-          pq.insert(new SolverBoardStep(b.manhattan() + numSteps, b, minBoard));
+          pq.insert(new SolverBoardStep(min.moves+1, b, min));
         }
       }
     }
+
+    private void printpq(MinPQ<SolverBoardStep> pq)
+    {
+      for(SolverBoardStep s: pq)
+      {
+        System.out.printf("%s",s.toString());
+      }
+    }
+
+    private Deque<Board> getPath(SolverBoardStep s)
+    {
+      Deque<Board> path = new LinkedList<Board>();
+      while(s != null)
+      {
+        path.addFirst(s.board);
+        s = s.prev;
+      }
+
+      return path;
+    }
   }
+
+
 
   private static class SolverBoardStep implements Comparable<SolverBoardStep>
   {
     private int dist;
     private Board board;
-    private Board prevBoard;
-    private SolverBoardStep(int dist, Board board, Board prevBoard)
+    private SolverBoardStep prev;
+    private int moves;
+    private SolverBoardStep(int moves, Board board, SolverBoardStep prev)
     {
-      this.dist = dist;
+      this.moves = moves;
+      this.dist = board.manhattan() + moves;
       this.board = board;
-      this.prevBoard = prevBoard;
+      this.prev = prev;
     }
 
     public int compareTo(SolverBoardStep that)
@@ -113,6 +150,11 @@ public class Solver
       if(this.dist < that.dist) return -1;
       else if(this.dist > that.dist) return +1;
       else return 0;
+    }
+
+    public String toString()
+    {
+      return "[dist = " + dist + "board = " + board.toString() + "]";
     }
   }
 
