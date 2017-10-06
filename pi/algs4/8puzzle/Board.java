@@ -223,7 +223,7 @@ public class Board
     {
       Board b = new Board(blocks);
       System.out.println("input = \n" + b);
-      System.out.println("\neighbors = \n" + b.neighbors());
+      System.out.println("\nneighbors = \n" + b.neighbors());
       System.out.println("hamming = " + b.hamming());
       System.out.println("manhattan = " + b.manhattan());
       System.out.println("isGoal = " + b.isGoal());
