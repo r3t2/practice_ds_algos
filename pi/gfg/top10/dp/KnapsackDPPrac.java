@@ -106,7 +106,10 @@ public class KnapsackDPPrac
   public static void main(String [] args)
   {
     runTest(new int [] {1, 3, 15, 5}, new int [] {1, 2, 3, 4}, 10);
+    runTest(new int [] {1, 3, 15, 5}, new int [] {2, 2, 3, 4}, 1);
+    runTest(new int [] {1, 3, 15, 5}, new int [] {2, 2, 3, 4}, 2);
     runTest(new int [] {15, 5, 1, 18}, new int [] {2, 10, 1, 10}, 20);
+    runTest(new int [] {60, 100, 120}, new int [] {10, 20, 30}, 50);
 
   }
 
@@ -115,7 +118,7 @@ public class KnapsackDPPrac
       System.out.printf("v = %s\n", Arrays.toString(v));
       System.out.printf("w = %s\n", Arrays.toString(w));
       System.out.printf("W = %d\n", W);
-      System.out.printf("knapsack = %s\n\n", Arrays.toString(KnapsackDPPrac.knapsackSol(v, w, W)));
+      System.out.printf("knapsack items = %s\n\n", Arrays.toString(KnapsackDPPrac.knapsackSol(v, w, W)));
   }
 
 }
