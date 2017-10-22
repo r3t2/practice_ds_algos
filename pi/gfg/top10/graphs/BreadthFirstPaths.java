@@ -5,6 +5,10 @@ Breadth First Traversal (or Search) for a graph is similar to Breadth First Trav
 For example, in the following graph, we start traversal from vertex 2. When we come to vertex 0, we look for all adjacent vertices of it. 2 is also an adjacent vertex of 0. If we don’t mark visited vertices, then 2 will be processed again and it will become a non-terminating process. A Breadth First Traversal of the following graph is 2, 0, 3, 1.
 */
 
+import java.util.LinkedList;
+import java.util.Deque;
+import java.util.Scanner;
+import java.io.File;
 
 public class BreadthFirstPaths
 {
@@ -75,8 +79,16 @@ public class BreadthFirstPaths
 
     public static void main(String [] args)
     {
+        runTest("../../../../testing/algs4-data/tinyDG.txt", 0, 2);
+    }
 
-
+    private static void runTest (String fname, int s, int d)
+    {
+        try{
+        DiGraph dg = new DiGraph(new Scanner(new File(fname)));
+        BreadthFirstPaths bfs = new BreadthFirstPaths(dg, s);
+        System.out.println("path to "+ d + " = " + bfs.pathTo(d));}
+        catch(Exception e){};
     }
 }
 

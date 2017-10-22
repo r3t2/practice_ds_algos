@@ -5,6 +5,7 @@ Implementation of DiGraph as learned in algs4 from Coursera
 import java.util.Scanner;
 import java.util.Collection;
 import java.util.ArrayList;
+import java.io.File;
 
 public class DiGraph
 {
@@ -63,6 +64,36 @@ public class DiGraph
     public int E()
     {
         return E;
+    }
+
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append(V + "\n");
+        sb.append(E + "\n");
+
+        for (int v=0; v<V; v++)
+        {
+            for(int w: adj[v])
+            {
+                sb.append(v + " " + w + "\n");
+            }
+        }
+
+        return sb.toString();
+    }
+
+    public static void main(String [] args)
+    {
+        runTest("../../../../testing/algs4-data/tinyDG.txt");
+    }
+
+    private static void runTest (String fname)
+    {
+        try{
+        DiGraph dg = new DiGraph(new Scanner(new File(fname)));
+        System.out.println(dg);}
+        catch(Exception e){};
     }
 
 }
