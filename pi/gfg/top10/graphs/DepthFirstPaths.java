@@ -76,6 +76,6 @@ public class DepthFirstPaths
             DepthFirstPaths bfs = new DepthFirstPaths(dg, s);
             System.out.println("path to "+ d + " = " + bfs.pathTo(d));}
             catch(Exception e){};
-        }
-
     }
+
+}
