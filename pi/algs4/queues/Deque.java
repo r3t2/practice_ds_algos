@@ -29,7 +29,7 @@ public class Deque<Item> implements Iterable<Item>
 	// Add the element to the start of the deque
 	public void addFirst(Item e)
 	{
-		if(e == null) throw new IllegalArgumentException();
+		if(e == null) throw new IllegalArgumentException("input is null");
 
 		if(head == null)
 		{
@@ -48,7 +48,7 @@ public class Deque<Item> implements Iterable<Item>
 	// Add the element to the end of the deque
 	public void addLast(Item e)
 	{
-		if(e == null) throw new IllegalArgumentException();
+		if(e == null) throw new IllegalArgumentException("input is null");
 
 		if(tail == null)
 		{

@@ -27,6 +27,11 @@ public class KdTree
     return size == 0;
   }
 
+  public int size()
+  {
+  	return size;
+  }
+
   public void insert(Point2D p)
   {
     root = insert(root, p, 0);
@@ -34,7 +39,7 @@ public class KdTree
 
   private Node insert(Node n, Point2D p, int d)
   {
-    if(n == null) return new Node(p, d);
+    if(n == null) {size++; return new Node(p, d);}
 
     if(n.p.equals(p)) return n; // return n if the current node contains a point equal to the input point.
 
@@ -106,7 +111,7 @@ public class KdTree
   }
 
   /* number of points bounded by the rectangle defined by r */
-  public int count(RectHV r)
+  private int count(RectHV r)
   {
     return 0;
   }

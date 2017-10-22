@@ -2,12 +2,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Arrays;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.Queue;
 
 public class SkylineProblem
 {
-	public List<int[]> getSkyLine(int[][] buildings)
+	public List<int[]> getSkyline(int[][] buildings)
 	{
 		/*create new max priority queue*/
 		PriorityQueue<Integer> hPQ = new PriorityQueue<Integer> (11, new MaxComparator());
@@ -22,18 +26,19 @@ public class SkylineProblem
 		height corresponding to that building. */
 		int [] building;
 		int Li, Ri, Hi, nextBIdx=0;
-		int nextBStart, nextBEnd, skyX, skyH;
+		int nextBStart, nextBEnd, skyX=-1, prevSkyX=-1, skyH=-1, prevSkyH=-1;
 		Node nextBEndNode;
 
 		while (!(bEndPQ.isEmpty()) || (nextBIdx < buildings.length))
 		{
 			if(nextBIdx < buildings.length) nextBStart = buildings[nextBIdx][0];
-			else nextBStart = Integer.MAX_VALUE;
+			else nextBStart = -1;
 
 			if(bEndPQ.isEmpty() == false) nextBEnd = bEndPQ.peek().x;
 			else nextBEnd = Integer.MAX_VALUE;
 
-			if(nextBStart < nextBEnd)
+			/*when nextBStart == nextBEnd, remove the building and add next building to compute skyline*/
+			if((nextBStart>=0) && (nextBStart <= nextBEnd))
 			{
 				Hi = buildings[nextBIdx][2];
 				Ri = buildings[nextBIdx][1];
@@ -44,6 +49,7 @@ public class SkylineProblem
 
 				nextBIdx++;
 
+				prevSkyX = skyX;
 				skyX = Li;
 			}
 			else
@@ -52,17 +58,52 @@ public class SkylineProblem
 				Hi = nextBEndNode.h;
 				hPQ.remove(Hi);
 
+				prevSkyX = skyX;
 				skyX = nextBEndNode.x;
 			}
 
-
+			prevSkyH = skyH;
 			skyH = hPQ.peek()==null?0:hPQ.peek();
-			skyline.add(new int[]{skyX, skyH});
 
-
+			addToSkyline(skyline, new int[]{skyX, skyH});
+			
 		}
 
 		return skyline;
+	}
+
+	private void addToSkyline(List<int[]> skyline, int[] currPoint)
+	{
+		if(skyline.isEmpty())
+		{
+			skyline.add(currPoint);
+			return;
+		}
+		else
+		{
+			int[] prevPoint = skyline.remove(skyline.size()-1);
+			/*If x value between curr and prev is same, keep current point*/
+			if(prevPoint[0] == currPoint[0])
+			{
+				skyline.add(currPoint);
+				return;
+			}
+			/*x value is not the same*/
+			else
+			{ 
+				if(prevPoint[1] == currPoint[1])
+				{
+					skyline.add(prevPoint);
+					return;
+				}
+				else
+				{
+					skyline.add(prevPoint);
+					skyline.add(currPoint);
+					return;
+				}
+			}
+		}
 	}
 
 	public static void main(String[] args)
@@ -70,19 +111,35 @@ public class SkylineProblem
 		Scanner sc = new Scanner(System.in);
 
 		ArrayList<int[]> buildings = new ArrayList<int[]>();
+		Queue<Integer> intStream = new LinkedList<Integer>();
 		int Li, Ri, Hi;
 
-		int numBuildings = 0;
+		String patternString = "\\d+";
+		Pattern p = Pattern.compile(patternString);
+		Matcher m;
 
-		while(sc.hasNextInt())
+		String inp;
+		while(sc.hasNextLine())
 		{
-			Li = sc.nextInt();
-			Ri = sc.nextInt();
-			Hi = sc.nextInt();
+			inp = sc.nextLine();
+			m = p.matcher(inp);
+			while(!m.hitEnd() && m.find())
+			{
+				intStream.add(Integer.parseInt(m.group()));
+			}
+		}
 
-			buildings.add(new int[] {Li, Ri, Hi});
+		int numBuildings = 0;
+		while(!intStream.isEmpty())
+		{
+			Li = intStream.poll();
+			Ri = intStream.poll();
+			Hi = intStream.poll();
+			buildings.add(new int[]{Li, Ri, Hi});
 			numBuildings++;
 		}
+
+
 
 		System.out.println("input buildings:");
 		for(int[] building: buildings)
@@ -94,7 +151,7 @@ public class SkylineProblem
 		int[][] buildingsArray = buildings.toArray(new int[numBuildings][3]);
 
 
-		List<int[]> skyline = s.getSkyLine(buildingsArray);
+		List<int[]> skyline = s.getSkyline(buildingsArray);
 
 		System.out.println("skyline = ");
 		for(int[] point : skyline)

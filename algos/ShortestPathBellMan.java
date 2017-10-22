@@ -29,7 +29,12 @@ public class ShortestPathBellMan
 
 		runBellMan(s);
 
+		checkNegativeCycle();
+
 	}
+
+
+	
 	private void runBellMan(int s)
 	{
 		boolean graphUpdated;
@@ -53,6 +58,11 @@ public class ShortestPathBellMan
 			}
 		}
 
+	}
+
+	private Iterable<Integer> checkNegativeCycle()
+	{
+		
 	}
 
 	private boolean relaxEdge(DirectedEdge e)
