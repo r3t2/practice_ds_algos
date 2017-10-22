@@ -16,15 +16,34 @@ public class PickFromArrayTwoPlayerGameDPPrac
     {
         if(arr == null) throw new IllegalArgumentException();
 
-        int [] sol = maxPossible(arr, 0, arr.length-1, 0);
+        int N = arr.length;
+        int [][][] scratch = new int[N][N][];
+        int [] sol = maxPossible(arr, scratch, 0, arr.length-1, 0);
 
         return sol[0];
-    }    
+    }
 
-
-    private static int [] maxPossible(int [] arr, int st, int end, int player)
+    private static void printScratch(int [][][] scratch)
     {
+        int N = scratch.length;
+        for(int r = 0; r < N; r++)
+        {
+            for(int c = 0; c < N; c++)
+            {
+                System.out.printf("(r=%d, c=%d), sol=%s  ", r, c, Arrays.toString(scratch[r][c]));
+            }
+            System.out.printf("\n");
+        }
+        System.out.printf("\n");
+    }
+
+
+    private static int [] maxPossible(int [] arr, int[][][] scratch, int st, int end, int player)
+    {
+
         if(st > end) throw new IllegalArgumentException("st > end" + st + "  " + end);
+
+        if(scratch[st][end] != null) return Arrays.copyOf(scratch[st][end], 2);
 
         int [] sol; 
         int [] solSt, solEnd;
@@ -34,8 +53,8 @@ public class PickFromArrayTwoPlayerGameDPPrac
         if(st == end) {sol = new int [] {0, 0}; sol[player] = arr[st];}
         else
         {
-            solSt = maxPossible(arr, st+1, end, 1-player);
-            solEnd = maxPossible(arr, st, end-1, 1-player);
+            solSt = maxPossible(arr, scratch, st+1, end, 1-player);
+            solEnd = maxPossible(arr, scratch, st, end-1, 1-player);
 
             if(solSt[player] + arr[st] > solEnd[player] + arr[end])
             {
@@ -49,8 +68,12 @@ public class PickFromArrayTwoPlayerGameDPPrac
             }
             
         }
+        scratch[st][end] = sol;
 
-        return sol;
+        // System.out.printf("st = %d, end = %d\n", st, end);
+        // printScratch(scratch);
+
+        return Arrays.copyOf(sol, 2);
     }
     
     public static void main(String [] args)
