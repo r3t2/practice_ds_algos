@@ -40,6 +40,18 @@ public class Edge implements Comparable<Edge>
         return weight;
     }
 
+    public boolean equals(Object that)
+    {
+        if(this.getClass() !=that.getClass()) return false;
+        Edge t = (Edge) that;
+
+        if((t.v == this.v) && (t.w == this.w) && (t.weight == this.weight)) return true;
+        if((t.w == this.v) && (t.v == this.w) && (t.weight == this.weight)) return true;
+
+        return false;
+    }
+
+
     public String toString()
     {
         return String.format("%d, %d, %.02f", v, w, weight);
@@ -52,3 +64,5 @@ public class Edge implements Comparable<Edge>
     }
 
 }
+
+
