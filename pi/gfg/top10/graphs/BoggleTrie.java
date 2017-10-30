@@ -2,26 +2,8 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Arrays;
-/*
-$ java BoggleBrute
-Board:
-[G, I, Z]
-[U, E, K]
-[Q, X, E]
-dict:[QUIZ, GEEK, ABCD]
-words on board:[QUIZ, GEEK]
-num non-trivial calls to findWords:10305
 
-$ java BoggleTrie
-Board:
-[G, I, Z]
-[U, E, K]
-[Q, X, E]
-dict:[QUIZ, GEEK, ABCD]
-words on board:[QUIZ, GEEK]
-num non-trivial calls to findWords:8
-*/
-public class BoggleBrute
+public class BoggleTrie
 {
     private DiGraph g;
     private HashMap<Integer, Character> v2c = new HashMap<Integer, Character>();
@@ -31,46 +13,54 @@ public class BoggleBrute
     private int nR;
     private int nC;
 
+    private Trie trie; // root to Trie data structure 
+    private static final int R = 128; // ascii
+
     private static int cnt = 0;
 
-    public BoggleBrute(char[][] board, Set<String> dict)
+    public BoggleTrie(char[][] board, Set<String> dict)
     {
         this.dict = dict;
         /* creates a graph and constructs a map */
         charArr2Graph(board);
+        trie = new Trie(dict);
 
         
 
         StringBuffer sb = new StringBuffer();
-
+        char c;
         for(int i=0; i<g.V(); i++)
         {
-            findWords(i, sb, 0);
+            c = v2c.get(i);
+            findWords(i, sb, trie.root.next[c], 0);
         }
-
-        // System.out.println(g.adj(gIdx(2,0)));
-        // System.out.println(g.adj(gIdx(1,1)));
 
     }
 
-    public void findWords(int v, StringBuffer sb, int pos)
+    public void findWords(int v, StringBuffer sb, TNode n, int pos)
     {
-        cnt++; //Count the number of times findWords is called for analysis
+        if(n==null) return;
 
-        sb.append(v2c.get(v));
-        if(dict.contains(sb.toString()))
+        cnt++;
+        char c = v2c.get(v);
+        sb.append(c);
+
+        //if(dict.contains(sb.toString()))
+        if(n.val != null)
         {
             boggleWords.add(sb.toString());
         }
 
         cPath.add(v);
+
         for(int w: g.adj(v))
         {
             if(!cPath.contains(w))
             {
-                findWords(w, sb, pos+1);
+                findWords(w, sb, n.next[v2c.get(w)], pos+1);
             }
         }
+
         cPath.remove(v);
         sb.deleteCharAt(pos);
     }
@@ -127,9 +117,41 @@ public class BoggleBrute
 
         System.out.println("dict:" + dict.toString());
 
-        BoggleBrute b = new BoggleBrute(arr, dict);
+        BoggleTrie b = new BoggleTrie(arr, dict);
         System.out.println("words on board:" + b.words());
 
         System.out.println("num non-trivial calls to findWords:" + b.cnt);
     }
+
+    private class Trie
+    {
+
+        private TNode root;
+
+        private Trie(Set<String> set)
+        {
+            for(String s : set)
+            {
+                root = insert(root, s, 0, 0);
+            }
+        }
+
+        private TNode insert(TNode n, String s, int val, int pos)
+        {
+            if(n == null) n = new TNode();
+            if(pos == s.length()) {n.val = val; return n;}
+
+            char c = s.charAt(pos);
+            n.next[c] = insert(n.next[c], s, val, pos+1);
+            return n;
+        }
+
+    }
+
+    private static class TNode
+    {
+        Integer val;
+        TNode [] next = new TNode [R];
+    }
+
 }
