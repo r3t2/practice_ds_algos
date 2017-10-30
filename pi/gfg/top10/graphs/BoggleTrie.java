@@ -2,7 +2,25 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Arrays;
+/*
+$ java BoggleBrute
+Board:
+[G, I, Z]
+[U, E, K]
+[Q, X, E]
+dict:[QUIZ, GEEK, ABCD]
+words on board:[QUIZ, GEEK]
+num non-trivial calls to findWords:10305
 
+$ java BoggleTrie
+Board:
+[G, I, Z]
+[U, E, K]
+[Q, X, E]
+dict:[QUIZ, GEEK, ABCD]
+words on board:[QUIZ, GEEK]
+num non-trivial calls to findWords:8
+*/
 public class BoggleTrie
 {
     private DiGraph g;
