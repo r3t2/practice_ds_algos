@@ -3,6 +3,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+
 import edu.princeton.cs.algs4.Edge;
 import edu.princeton.cs.algs4.EdgeWeightedGraph;
 
@@ -11,8 +15,14 @@ public class BusLinesFewestTransfers
 {
     private HashMap<String, List<String>> line2Sta = new HashMap<String, List<String>> ();
     private HashMap<String, List<Integer>> sta2vertices = new HashMap<String, List<Integer>> ();
+    private HashMap<Integer, StaLinePair> vertex2StaLine = new HashMap<Integer, StaLinePair> ();
 
     private EdgeWeightedGraph g;
+
+    private double [] distTo;
+    private int [] edgeTo;
+
+    private PriorityQueue<PQNode> dijkstraPQ;
 
     public BusLinesFewestTransfers(Scanner sc)
     {
@@ -66,11 +76,107 @@ public class BusLinesFewestTransfers
                 if(prevStaIdx != -1) g.addEdge(new Edge(currStaIdx, prevStaIdx, 0));
 
                 staVertices.add(currStaIdx);
+                vertex2StaLine.put(currStaIdx, new StaLinePair(sta, line));
                 prevStaIdx = currStaIdx;
                 currStaIdx++;
             }
         }
 
+    }
+
+    public Iterable<String> routeFewestTransfers(String source, String dest)
+    {
+        Iterable<Integer> pathInternal = routeFewestTransfers(sta2vertices.get(source), sta2vertices.get(dest));
+        Deque<String> path = new LinkedList<String> ();
+
+        for (int i: pathInternal)
+        {
+            StaLinePair s = vertex2StaLine.get(i);
+            path.addLast(s.toString());
+        }
+
+        return path;
+
+    }
+
+    private Iterable<Integer> routeFewestTransfers(List<Integer> source, List<Integer> dest)
+    {
+        distTo = new double [g.V()];
+        edgeTo = new int [g.V()];
+
+        for(int i=0; i<g.V(); i++)
+        {
+            distTo[i] = Double.POSITIVE_INFINITY;
+            edgeTo[i] = i;
+        }
+
+        dijkstraPQ = new PriorityQueue<PQNode> ();
+        for(int i: source)
+        {
+            distTo[i] = 0;
+            dijkstraPQ.add(new PQNode(0, i));
+        }
+
+        runDijkstra();
+
+        return getPath(source, dest);
+    }
+
+    private Iterable<Integer> getPath(List<Integer> source, List<Integer> dest)
+    {
+        double minDist = Double.POSITIVE_INFINITY;
+        int minIdx = -1;
+        for(int d: dest)
+        {
+            if(minDist > distTo[d])
+            {
+                minDist = distTo[d];
+                minIdx = d;
+            }
+        }
+
+        Deque<Integer> path = new LinkedList<Integer> ();
+        int v = minIdx;
+        path.addFirst(v);
+
+        while(v != edgeTo[v])
+        {
+            v = edgeTo[v];
+            path.addFirst(v);
+        }
+
+        return path;
+    }
+
+    private void runDijkstra()
+    {
+        /* 
+        while priority queue is not empty
+        get min entry
+        relax all edges 
+        */
+
+        while(!dijkstraPQ.isEmpty())
+        {
+            PQNode minNode = dijkstraPQ.poll();
+            int v = minNode.v;
+            for(Edge e: g.adj(v))
+            {
+                relaxEdge(e, v);
+            }
+        }
+
+    }
+
+    private void relaxEdge(Edge e, int v)
+    {
+        int w = e.other(v);
+        if(distTo[w] > distTo[v] + e.weight())
+        {
+            distTo[w] = distTo[v] + e.weight();
+            edgeTo[w] = v;
+            dijkstraPQ.add(new PQNode(distTo[w], w));
+        }
     }
 
     public String toString()
@@ -89,5 +195,45 @@ public class BusLinesFewestTransfers
         Scanner sc = new Scanner(new File(args[0]));
         BusLinesFewestTransfers b = new BusLinesFewestTransfers(sc);
         System.out.println(b);
+        runTest(b, "A", "F");
+        runTest(b, "A", "G");
+        runTest(b, "A", "D");
+    }
+    private static void runTest(BusLinesFewestTransfers b, String src, String dest)
+    {
+        System.out.printf("src = %s, dest = %s, path = %s\n\n",src, dest, b.routeFewestTransfers(src, dest));
+    }
+
+    private static class StaLinePair
+    {
+        String staName;
+        String lineName;
+        private StaLinePair(String sta, String line)
+        {
+            this.staName = sta;
+            this.lineName = line;
+        }
+        public String toString()
+        {
+            return "(" + lineName + ", " + staName + ")";
+        }
+    }
+
+    private static class PQNode implements Comparable<PQNode>
+    {
+        private double dist;
+        private int v;
+        private PQNode(double dist, int v)
+        {
+            this.dist = dist;
+            this.v = v;
+        }
+
+        public int compareTo(PQNode that)
+        {
+            if(this.dist < that.dist) return -1;
+            else if(this.dist > that.dist) return +1;
+            else return 0;
+        }
     }
 }
