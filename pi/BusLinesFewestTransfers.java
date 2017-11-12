@@ -14,6 +14,7 @@ import edu.princeton.cs.algs4.EdgeWeightedGraph;
 public class BusLinesFewestTransfers
 {
     private HashMap<String, List<String>> line2Sta = new HashMap<String, List<String>> ();
+    private HashMap<String, List<String>> sta2Line = new HashMap<String, List<String>> ();
     private HashMap<String, List<Integer>> sta2vertices = new HashMap<String, List<Integer>> ();
     private HashMap<Integer, StaLinePair> vertex2StaLine = new HashMap<Integer, StaLinePair> ();
 
@@ -43,6 +44,15 @@ public class BusLinesFewestTransfers
                 String staName = sc.next();
                 stations.add(staName);
                 numGVertices++;
+
+                List<String> linesAtSta = sta2Line.get(staName);
+                if(linesAtSta == null)
+                {
+                    linesAtSta = new ArrayList<String> ();
+                    sta2Line.put(staName, linesAtSta);
+                }
+                linesAtSta.add(lineName);
+
             }
             line2Sta.put(lineName, stations);
         }
@@ -184,6 +194,7 @@ public class BusLinesFewestTransfers
         StringBuffer sb = new StringBuffer();
 
         sb.append("Line to Stations =\n" + line2Sta.toString() + "\n\n");
+        sb.append("Stations to Lines = \n" + sta2Line.toString() + "\n\n");
         sb.append("Station to Vertices = \n" + sta2vertices.toString() + "\n\n");
         sb.append("System Graph = \n" + g.toString() + "\n\n");
 
