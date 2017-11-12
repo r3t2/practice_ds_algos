@@ -14,6 +14,8 @@ import edu.princeton.cs.algs4.EdgeWeightedGraph;
 public class BusLinesFewestTransfers
 {
     private HashMap<String, List<String>> line2Sta = new HashMap<String, List<String>> ();
+    private HashMap<String, Integer> line2Idx = new HashMap<String, Integer> ();
+    private HashMap<Integer, String> idx2Line = new HashMap<Integer, String> ();
     private HashMap<String, List<String>> sta2Line = new HashMap<String, List<String>> ();
     private HashMap<String, List<Integer>> sta2vertices = new HashMap<String, List<Integer>> ();
     private HashMap<Integer, StaLinePair> vertex2StaLine = new HashMap<Integer, StaLinePair> ();
@@ -23,6 +25,8 @@ public class BusLinesFewestTransfers
     private double [] distTo;
     private int [] edgeTo;
 
+    private int numLines;
+
     private PriorityQueue<PQNode> dijkstraPQ;
 
     public BusLinesFewestTransfers(Scanner sc)
@@ -30,6 +34,7 @@ public class BusLinesFewestTransfers
         if(sc == null) throw new IllegalArgumentException();
 
         int numLines = sc.nextInt();
+        this.numLines = numLines;
         int numGVertices = 0; // number of graph vertices
 
 
@@ -37,6 +42,8 @@ public class BusLinesFewestTransfers
         for(int n=0; n<numLines; n++)
         {
             String lineName = sc.next();
+            line2Idx.put(lineName, n);
+            idx2Line.put(n, lineName);
             int numSta = sc.nextInt();
             ArrayList<String> stations = new ArrayList<String> ();
             for(int s=0; s<numSta; s++)
@@ -94,6 +101,75 @@ public class BusLinesFewestTransfers
 
     }
 
+    public Iterable<String> routeFewestTransfersLines(String source, String dest)
+    {
+
+        Deque<Integer> bfsQueue = new LinkedList<Integer> ();
+        boolean [] marked = new boolean[numLines];
+        int [] edgeTo = new int[numLines];
+        int [] distTo = new int[numLines];
+
+        for(int i=0; i<numLines; i++)
+        {
+            marked[i] = false;
+            edgeTo[i] = i;
+            distTo[i] = Integer.MAX_VALUE;
+        }
+
+        // get all lines available at station "source"
+        List<String> linesFromThisSta = sta2Line.get(source);
+        for(String line: linesFromThisSta)
+        {
+            bfsQueue.addLast(line2Idx.get(line));
+            marked[line2Idx.get(line)] = true;
+            distTo[line2Idx.get(line)] = 0;
+        }
+
+        while(!bfsQueue.isEmpty())
+        {
+            int v = bfsQueue.removeFirst();
+            for(String sta: line2Sta.get(idx2Line.get(v)))
+            {
+
+                linesFromThisSta = sta2Line.get(sta);
+                for(String line: linesFromThisSta)
+                {
+                    if(!marked[line2Idx.get(line)])
+                    {
+                        bfsQueue.addLast(line2Idx.get(line));
+                        marked[line2Idx.get(line)] = true;
+                        edgeTo[line2Idx.get(line)] = v;
+                        distTo[line2Idx.get(line)] = distTo[v] + 1;
+                    }
+                }
+            }
+
+        }
+
+        int minVal = Integer.MAX_VALUE;
+        int minIdx = -1;
+        for(String line: sta2Line.get(dest))
+        {
+            if(minVal > distTo[line2Idx.get(line)])
+            {
+                minVal = distTo[line2Idx.get(line)];
+                minIdx = line2Idx.get(line);
+            }
+        }
+
+        Deque<String> path = new LinkedList<String> ();
+        int w = minIdx;
+
+        path.addFirst(idx2Line.get(w));
+        while(w != edgeTo[w])
+        {
+            w = edgeTo[w];
+            path.addFirst(idx2Line.get(w));
+        }
+
+        return path;
+
+    }
     public Iterable<String> routeFewestTransfers(String source, String dest)
     {
         Iterable<Integer> pathInternal = routeFewestTransfers(sta2vertices.get(source), sta2vertices.get(dest));
@@ -213,6 +289,7 @@ public class BusLinesFewestTransfers
     private static void runTest(BusLinesFewestTransfers b, String src, String dest)
     {
         System.out.printf("src = %s, dest = %s, path = %s\n\n",src, dest, b.routeFewestTransfers(src, dest));
+        System.out.printf("src = %s, dest = %s, path = %s\n\n",src, dest, b.routeFewestTransfersLines(src, dest));
     }
 
     private static class StaLinePair
