@@ -2,6 +2,8 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Arrays;
 
+/* Problem statement: Given an array of integers with possible duplicates, find a subset whose XOR between elements is maximum. Return the value*/
+
 public class MaxXorSubset
 {
     public static int maxXor(int [] x)

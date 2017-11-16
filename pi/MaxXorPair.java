@@ -1,5 +1,7 @@
 import java.util.Arrays;
 
+/*Problem statement: Given an array of integers, find a pair of numbers that will give the max xor value */
+
 public class MaxXorPair
 {
     public static final int NUM_BITS = 4;
