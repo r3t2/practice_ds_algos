@@ -3,6 +3,21 @@ import java.util.Deque;
 
 public class ModularExponentiation
 {
+    /* (a%p * b%p) %p = (a*b) % p*/
+    public static int modPow(int x, int y, int p)
+    {
+        if(y == 0) return 1;
+
+        int xModp = x%p;
+
+        if(y == 1) return xModp;
+
+        int xPowY2Modp = modPow(x, y/2, p);
+        int xPowYModp = ((xPowY2Modp % p) * (xPowY2Modp % p)) % p;
+        if(y % 2 == 0) return xPowYModp;
+        else return (xPowYModp * xModp)%p;
+    }
+
     /* calculate x ** y.
     */
     public static int pow(int x, int y)
@@ -48,15 +63,18 @@ public class ModularExponentiation
 
     public static void main(String [] args)
     {
-        runTest(2, 2);
-        runTest(2, 5);
-        runTest(2, 0);
-        runTest(2, 9);
-        runTest(2, 10);
+        runTest(2, 2, 2);
+        runTest(2, 5, 3);
+        runTest(2, 0, 4);
+        runTest(2, 9, 10);
+        runTest(2, 10, -5);
     }
 
-    private static void runTest(int x, int y)
+    private static void runTest(int x, int y, int p)
     {
-        System.out.printf("x = %d, y = %d, x ** y = %d \n", x, y, ModularExponentiation.pow(x, y));
+        System.out.printf("x = %d, y = %d, p = %d, x ** y = %d, (x ** y) mod p = %d \n", 
+            x, y, p,
+            ModularExponentiation.pow(x, y),
+            ModularExponentiation.modPow(x, y, p));
     }
 }
