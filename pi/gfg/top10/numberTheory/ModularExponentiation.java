@@ -23,8 +23,8 @@ public class ModularExponentiation
     public static int pow(int x, int y)
     {
         int res1 = powRecur(x, y);
-        int res2 = powIter(x, y);
-        if(res1 != res2) System.out.printf("res1 = %d, res2 = %d\n", res1, res2);
+        int res2 = powIter2(x, y);
+        if(res1 != res2) System.out.printf("FAIL:: Recur res1 = %d, Iter2 res2 = %d\n", res1, res2);
         return res2;
     }
 
@@ -59,6 +59,44 @@ public class ModularExponentiation
         }
 
         return prod;
+    }
+
+    private static int powIter2(int x, int y)
+    {
+        // get binary representation of y.
+        // y = yB[0]*2^0 + yB[1]*2^1 + yB[2]*2^2 + ....
+        // x ^ y = x ^ (yB[0]*2^0 + yB[1]*2^1 + yB[2]*2^2 + ....)
+        // x ^ y = x^(yB[0]*2^0) * x^(yB[1]*2^1) * x^(yB[2]*2^2) * ...
+        // for example: y = 6, yB = [0,1,1,0]
+        // x^y = x^(0*1) * x^(1*2) * x^(1*4) * x^(0*8)
+        int [] yB = getBinaryRepArr(y);
+
+        int xPowI = x;
+        int xPowY = 1;
+
+        for(int i=0; i<yB.length; i++)
+        {
+            if(yB[i] == 1) xPowY = xPowY * xPowI;
+            xPowI = xPowI * xPowI;
+        }
+
+        return xPowY;
+
+    }
+
+    private static int [] getBinaryRepArr(int n)
+    {
+        int [] binRep = new int[8];
+        for(int i=0; i<binRep.length; i++) binRep[i] = 0;
+
+        int i = 0;
+        while(n!=0)
+        {
+            binRep[i] = n % 2;
+            n = n >> 1;
+            i = i+1;
+        }
+        return binRep;
     }
 
     public static void main(String [] args)
