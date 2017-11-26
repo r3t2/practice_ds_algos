@@ -3,6 +3,8 @@ public class GCD
     public static int gcd(int a, int b)
     {
         if(a == 0) return b;
+        if(b == 0) return a;
+        
         if(b > a) return gcd(b%a, a);
         else return gcd(a%b, b);
     }
