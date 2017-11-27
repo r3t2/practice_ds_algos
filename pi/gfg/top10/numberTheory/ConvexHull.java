@@ -5,7 +5,7 @@ import java.util.Comparator;
 
 public class ConvexHull
 {
-
+  /* Use Graham Scan algorithm*/
   public static Iterable<Point> convexHull(Point [] points)
   {
     double yMin = Double.POSITIVE_INFINITY;
