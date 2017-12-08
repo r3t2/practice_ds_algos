@@ -167,9 +167,9 @@ public class MinDepthBinaryTree
     {
         runTest(5);
         runTest(10);
-        // runTest(15);
-        // runTest(20);
-        // runTest(30);
+        runTest(15);
+        runTest(20);
+        runTest(30);
     }
 
     private static void runTest(int N)
