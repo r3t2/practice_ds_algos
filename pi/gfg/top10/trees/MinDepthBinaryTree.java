@@ -64,6 +64,40 @@ public class MinDepthBinaryTree
     }
 
 
+    public int maxPathSum()
+    {
+        int [] sum = new int [1];
+        sum[0] = Integer.MIN_VALUE;
+        maxPathSum(root, sum);
+        return sum[0];
+    }
+
+    private int maxPathSum(Node n, int [] sum)
+    {
+        int leftSum = 0, rightSum = 0, subtreeMax = n.key, currMaxSubpath = n.key;
+        if(n.left != null)
+        {
+            leftSum = maxPathSum(n.left, sum); 
+            
+            if (leftSum > 0) subtreeMax += leftSum;
+            
+            currMaxSubpath = Math.max(currMaxSubpath, currMaxSubpath + leftSum);
+        }
+
+        if(n.right != null)
+        {
+            rightSum = maxPathSum(n.right, sum);
+            
+            if(rightSum > 0) subtreeMax += rightSum;
+
+            currMaxSubpath = Math.max(currMaxSubpath, currMaxSubpath + rightSum);
+        }
+
+        if(sum[0] < subtreeMax) sum[0] = subtreeMax;
+
+        return currMaxSubpath;
+    }
+
 
     public Iterable<Integer> levelOrder()
     {
@@ -81,61 +115,61 @@ public class MinDepthBinaryTree
         return keys;
     }
 
-    public Iterable<Integer> inOrder()
+    public Iterable<PrintOrderNode> inOrder()
     {
-        Deque<Integer> keys = new LinkedList<Integer> ();
-        inOrder(root, keys);
+        Deque<PrintOrderNode> keys = new LinkedList<PrintOrderNode> ();
+        inOrder(root, keys, 0);
         return keys;
     }
-    private void inOrder(Node n, Deque<Integer> keys)
+    private void inOrder(Node n, Deque<PrintOrderNode> keys, int lvl)
     {
         if(n == null) return;
 
-        inOrder(n.left, keys);
-        keys.addLast(n.key);
-        inOrder(n.right, keys);
+        inOrder(n.left, keys, lvl+1);
+        keys.addLast(new PrintOrderNode(n.key, lvl));
+        inOrder(n.right, keys, lvl+1);
     }
 
-    public Iterable<Integer> preOrder()
+    public Iterable<PrintOrderNode> preOrder()
     {
-        Deque<Integer> keys = new LinkedList<Integer> ();
-        preOrder(root, keys);
+        Deque<PrintOrderNode> keys = new LinkedList<PrintOrderNode> ();
+        preOrder(root, keys, 0);
         return keys;
     }
-    private void preOrder(Node n, Deque<Integer> keys)
+    private void preOrder(Node n, Deque<PrintOrderNode> keys, int lvl)
     {
         if(n == null) return;
 
-        keys.addLast(n.key);
+        keys.addLast(new PrintOrderNode(n.key, lvl+1));
 
-        preOrder(n.left, keys);
-        preOrder(n.right, keys);
+        preOrder(n.left, keys, lvl+1);
+        preOrder(n.right, keys, lvl+1);
     }
 
-    public Iterable<Integer> postOrder()
+    public Iterable<PrintOrderNode> postOrder()
     {
-        Deque<Integer> keys = new LinkedList<Integer> ();
-        postOrder(root, keys);
+        Deque<PrintOrderNode> keys = new LinkedList<PrintOrderNode> ();
+        postOrder(root, keys, 0);
         return keys;
     }
 
-    private void postOrder(Node n, Deque<Integer> keys)
+    private void postOrder(Node n, Deque<PrintOrderNode> keys, int lvl)
     {
         if(n == null) return;
 
-        postOrder(n.left, keys);
-        postOrder(n.right, keys);
+        postOrder(n.left, keys, lvl+1);
+        postOrder(n.right, keys, lvl+1);
 
-        keys.addLast(n.key);
+        keys.addLast(new PrintOrderNode(n.key, lvl));
     }
 
     public static void main(String [] args)
     {
         runTest(5);
         runTest(10);
-        runTest(15);
-        runTest(20);
-        runTest(30);
+        // runTest(15);
+        // runTest(20);
+        // runTest(30);
     }
 
     private static void runTest(int N)
@@ -143,7 +177,7 @@ public class MinDepthBinaryTree
         MinDepthBinaryTree tree = new MinDepthBinaryTree();
         for(int i=0; i<N; i++)
         {
-            tree.randomInsert(rand.nextInt(100), 0);
+            tree.randomInsert(rand.nextInt(100)-50, 0);
         }
 
         System.out.println("lvl  order = " + tree.levelOrder());
@@ -153,6 +187,8 @@ public class MinDepthBinaryTree
         System.out.println("minHeight recursive = " + tree.minHeight());
         System.out.println("minHeight iterative = " + tree.minHeight2());
         System.out.println("maxHeight recursive = " + tree.maxHeight());
+        System.out.println("");
+        System.out.println("maxPathSum  = " + tree.maxPathSum());
         System.out.println("");
     }
 
@@ -187,6 +223,22 @@ public class MinDepthBinaryTree
             this.val = val;
             this.left = left;
             this.right = right;
+        }
+    }
+
+    private static class PrintOrderNode
+    {
+        private int k;
+        private int l;
+
+        private PrintOrderNode(int k, int l)
+        {
+            this.k = k;
+            this.l = l;
+        }
+        public String toString()
+        {
+            return "(" + k + ", " + l + ")";
         }
     }
 }
