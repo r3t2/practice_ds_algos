@@ -3,6 +3,9 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Collections;
+import java.util.Arrays;
 
 public class PrintTreeVertical
 {
@@ -43,51 +46,55 @@ public class PrintTreeVertical
         findSpan(n.left, pos-1, span);
         findSpan(n.right, pos+1, span);
     }
-    public Iterable<Integer> topView()
+    public PrintOrderNode [] topView()
+    {
+
+        List<PrintOrderNode> [] nodes = verticalOrder();
+        PrintOrderNode [] top = new PrintOrderNode[nodes.length];
+
+        for(int i=0; i<nodes.length; i++)
+        {
+            top[i] = Collections.min(nodes[i], new PrintOrderNodeAscendingComparator());
+        }
+
+        return top;       
+    }
+
+    public PrintOrderNode[] bottomView()
+    {
+
+        List<PrintOrderNode> [] nodes = verticalOrder();
+        PrintOrderNode [] bottom = new PrintOrderNode[nodes.length];
+
+        for(int i=0; i<nodes.length; i++)
+        {
+            bottom[i] = Collections.min(nodes[i], new PrintOrderNodeDescendingComparator());
+        }
+
+        return bottom;
+    }
+
+    public List<PrintOrderNode> [] verticalOrder()
     {
         int [] span = new int[2];
         span[0] = 0;
         span[1] = 0;
         findSpan(root, 0, span);
 
-        Deque<Integer> [] nodes = (LinkedList<Integer> []) new LinkedList[span[1] - span[0] + 1];
-
-        topView(root, -span[0], nodes);
-
-        return null;
-    }
-
-    private void topView(Node n, int pos, Deque<Integer> [] nodes)
-    {
-
-    }
-
-    public Iterable<Integer> bottomView()
-    {
-        return null;
-    }
-
-    public List<Integer> [] verticalOrder()
-    {
-        int [] span = new int[2];
-        span[0] = 0;
-        span[1] = 0;
-        findSpan(root, 0, span);
-
-        List<Integer> [] nodes = (ArrayList<Integer> []) new ArrayList[span[1] - span[0] + 1];
-        for(int i=0; i<nodes.length; i++) nodes[i] = new ArrayList<Integer> ();
-        verticalOrder(root, -span[0], nodes);
+        List<PrintOrderNode> [] nodes = (ArrayList<PrintOrderNode> []) new ArrayList[span[1] - span[0] + 1];
+        for(int i=0; i<nodes.length; i++) nodes[i] = new ArrayList<PrintOrderNode> ();
+        verticalOrder(root, -span[0], 0, nodes);
         return nodes;
     }
 
-    private void verticalOrder(Node n, int pos, List<Integer> [] nodes)
+    private void verticalOrder(Node n, int pos, int lvl, List<PrintOrderNode> [] nodes)
     {
         if(n == null) return;
 
-        nodes[pos].add(n.key);
+        nodes[pos].add(new PrintOrderNode(n.key, lvl));
 
-        verticalOrder(n.left, pos-1, nodes);
-        verticalOrder(n.right, pos+1, nodes);
+        verticalOrder(n.left, pos-1, lvl+1, nodes);
+        verticalOrder(n.right, pos+1, lvl+1, nodes);
     }
 
     public static void main(String [] args)
@@ -109,13 +116,16 @@ public class PrintTreeVertical
 
         System.out.println("tree span = " + tree.span());
         
-        List<Integer> [] nodes = tree.verticalOrder();
+        List<PrintOrderNode> [] nodes = tree.verticalOrder();
         StringBuffer sb = new StringBuffer();
-        for(List<Integer> l : nodes)
+        for(List<PrintOrderNode> l : nodes)
         {
             sb.append(l.toString() + ", ");
         }
         System.out.println("vertical   order = " + sb.toString());
+
+        System.out.println("topView = " + Arrays.toString(tree.topView()));
+        System.out.println("bottomView = " + Arrays.toString(tree.bottomView()));
         System.out.println("");
     }
 
@@ -155,6 +165,25 @@ public class PrintTreeVertical
         public String toString()
         {
             return "(" + k + ", " + l + ")";
+        }
+    }
+
+    private class PrintOrderNodeAscendingComparator implements Comparator<PrintOrderNode>
+    {
+        public int compare(PrintOrderNode x, PrintOrderNode y)
+        {
+            if(x.l < y.l) return -1;
+            if(x.l > y.l) return +1;
+            return 0;
+        }
+    }
+    private class PrintOrderNodeDescendingComparator implements Comparator<PrintOrderNode>
+    {
+        public int compare(PrintOrderNode x, PrintOrderNode y)
+        {
+            if(x.l > y.l) return -1;
+            if(x.l < y.l) return +1;
+            return 0;
         }
     }
 
