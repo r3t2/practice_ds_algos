@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class JumpGameII
 {
@@ -17,6 +19,33 @@ public class JumpGameII
         Note:
         You can assume that you can always reach the last index.
     */
+    public static int jump(int [] jumps)
+    {
+        if(jumps == null) throw new NullPointerException();
+
+        int [] cnt = new int [jumps.length];
+        for(int i=0; i<cnt.length; i++) cnt[i] = -1;
+        cnt[0] = 0;
+
+        Deque<Integer> q = new LinkedList<Integer> ();
+
+        q.addLast(0);
+
+        while(!q.isEmpty())
+        {
+            int v = q.removeFirst();
+            for(int i=1; i<=jumps[v]; i++)
+            {
+                if(v+i < cnt.length && cnt[v+i] == -1)
+                {
+                    cnt[v+i] = cnt[v] + 1;
+                    q.addLast(v+i);
+                }
+            }
+        }
+
+        return cnt[cnt.length -1];
+    }
     // O(N2) implementation
     public static int jumpON2(int [] jumps)
     {
@@ -55,6 +84,7 @@ public class JumpGameII
     private static void runTest(int [] arr)
     {
         System.out.printf("input = %s \n", Arrays.toString(arr));
-        System.out.printf("min jumps = %d\n\n", JumpGameII.jumpON2(arr));
+        System.out.printf("min jumps = %d\n", JumpGameII.jumpON2(arr));
+        System.out.printf("min jumps = %d\n\n", JumpGameII.jump(arr));
     }
 }
