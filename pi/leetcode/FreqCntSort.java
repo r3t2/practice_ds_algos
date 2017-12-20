@@ -38,7 +38,6 @@ import java.util.Comparator;
     "bbaA" is also a valid answer, but "Aabb" is incorrect.
     Note that 'A' and 'a' are treated as two different characters.
     */
-
 public class FreqCntSort
 {
     
@@ -88,6 +87,7 @@ public class FreqCntSort
         runTest("ababab");
         runTest("");
         runTest("a");
+
     }
 
     private static void runTest(String s)
