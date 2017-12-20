@@ -9,8 +9,9 @@ public class IntegerBreakMaxProd
 {
     public static int integerBreak(int n) {
         if(n<1) throw new IllegalArgumentException();
-        if(n==1) return 1;
-        if(n==2) return 1;
+        if(n==1) return 1; 
+        if(n==2) return 1; //ugly
+        if(n==3) return 2; //ugly
 
         int [] dp = new int[n+1];
         for(int i=0; i<dp.length; i++) dp[i] = -1;
