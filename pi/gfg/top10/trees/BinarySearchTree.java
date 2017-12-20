@@ -5,14 +5,14 @@ import java.util.Random;
 public class BinarySearchTree
 {
     private static Random rand = new Random();
-    private Node root;
+    private BinaryTreeNode root;
 
     public void insert(int key, int val)
     {
         root = insert(root, key, val);
     }
 
-    private Node insert(Node n, int key, int val)
+    private BinaryTreeNode insert(BinaryTreeNode n, int key, int val)
     {
         if(n == null) return new Node(key, val);
 
@@ -49,7 +49,7 @@ public class BinarySearchTree
         return path;
     }
 
-    private void getPath(Node n, int v, Deque<Integer> path)
+    private void getPath(BinaryTreeNode n, int v, Deque<Integer> path)
     {
         if(n == null) return;
 
@@ -58,6 +58,15 @@ public class BinarySearchTree
         if(v == n.key) return;
         else if(v < n.key) getPath(n.left, v, path);
         else getPath(n.right, v, path);
+    }
+
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append("level order = " + PrintBinaryTree.levelOrder(root).toString());
+        sb.append("\nin order = " + PrintBinaryTree.inOrder(root).toString());
+
+        return sb.toString();
     }
 
     public static void main(String [] args)
@@ -83,18 +92,17 @@ public class BinarySearchTree
         int w = keys[rand.nextInt(N)];
 
 
-
+        System.out.println("tree = " + tree.toString());
         System.out.printf("lowest common ancestor of %d, %d = %d\n\n", v, w, tree.lowestCommonAncestor(v, w));
     }
 
-
-    private static class Node
+    private static class Node extends BinaryTreeNode
     {
-        private int key;
-        private int val;
+        // private int key;
+        // private int val;
 
-        private Node left;
-        private Node right;
+        // private Node left = null;
+        // private Node right = null;
 
         private Node(int key, int val)
         {
@@ -104,9 +112,11 @@ public class BinarySearchTree
 
         private Node(int key, int val, Node left, Node right)
         {
-            this(key, val);
+            this.key = key;
+            this.val = val;
             this.left = left;
             this.right = right;
-        }        
+        }
     }
+
 }

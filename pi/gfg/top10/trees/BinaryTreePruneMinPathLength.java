@@ -1,5 +1,7 @@
 public class BinaryTreePruneMinPathLength
 {
+    private Node root;
+
     public void pruneMinPathLength(int k)
     {
         root = pruneMinPathLength(root, k, 1);
@@ -16,5 +18,13 @@ public class BinaryTreePruneMinPathLength
 
         if(p<k && n.left == null && n.right == null) return null;
         else return n;
+    }
+
+    private static class Node
+    {
+        private int key;
+        private int val;
+        private Node left;
+        private Node right;
     }
 }
