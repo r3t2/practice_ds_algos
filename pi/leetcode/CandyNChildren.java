@@ -40,7 +40,7 @@ public class CandyNChildren
         int [] cnt = new int[ratings.length];
         for(int i=0; i<cnt.length; i++) cnt[i] = 1;
 
-        
+        return 0;
     }
     public static int candy2(int[] ratings)
     {
