@@ -10,6 +10,8 @@ public class CanIWinSumGame
         for(int i=1; i<=n; i++) s.remaining.add(i);
         s.player = 0;
         HashMap<State, Integer> h = new HashMap<State, Integer>();
+
+        s.updateHashCode();
         int best = bestScore(s, t, h);
         return best == 1;
     }
@@ -27,9 +29,11 @@ public class CanIWinSumGame
 
             sNew.total += r;
 
+
             if(s.player == 0 && sNew.total >= t) return +1;
             if(s.player == 1 && sNew.total >= t) return -1;
 
+            sNew.updateHashCode();
             int ret = bestScore(sNew, t, h);
 
             if(s.player == 0)   maxScore = Math.max(maxScore, ret);
@@ -56,6 +60,8 @@ public class CanIWinSumGame
 
         private int player = 0;
 
+        private int hashcode = 0;
+
         private State() {};
 
         private State(State s)
@@ -63,12 +69,16 @@ public class CanIWinSumGame
             this.total = s.total;
             this.remaining = new HashSet<Integer>(s.remaining);
             this.player = s.player;
+            this.hashcode = s.hashcode;
         }
 
+        private void updateHashCode()
+        {
+            hashcode = 31*total + player;
+            hashcode += 31*hashcode + remaining.hashCode();
+        }
         public int hashCode()
         {
-            int hashcode = 31*total + player;
-            hashcode += 31*hashcode + remaining.hashCode();
             return hashcode;
         }
 
