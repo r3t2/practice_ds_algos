@@ -36,8 +36,16 @@ public class CanIWinSumGame
             sNew.updateHashCode();
             int ret = bestScore(sNew, t, h);
 
-            if(s.player == 0)   maxScore = Math.max(maxScore, ret);
-            else                minScore = Math.min(minScore, ret);
+            if(s.player == 0)
+            {
+                maxScore = Math.max(maxScore, ret);
+                if(maxScore == +1) break;
+            }
+            else
+            {
+                minScore = Math.min(minScore, ret);
+                if(minScore == -1) break;
+            }
         }
 
         if(s.player == 0)
