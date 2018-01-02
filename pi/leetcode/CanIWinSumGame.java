@@ -1,10 +1,78 @@
 import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
+import java.util.Arrays;
 
 public class CanIWinSumGame
 {
     public static boolean canIWin(int n, int t)
+    {
+        int [] sel = new int[n+1];
+        for(int i=0; i<=n; i++) sel[i] = 0;
+
+        if(t > n*(n+1)/2) return false;
+        if(t<=0) return true;
+
+        HashMap<Integer, Integer> h = new HashMap<Integer, Integer> ();
+
+        int ret = bestScore(sel, t, h, 0);
+
+        System.out.printf("hashmap size = %d\n", h.size());
+
+        return ret == 1;
+    }
+
+    private static int bestScore(int [] sel, int t, HashMap<Integer, Integer> h, int player)
+    {
+        int key = Arrays.hashCode(sel);
+        int n = sel.length-1;
+        if(h.containsKey(key)) return h.get(key);
+
+        int maxScore = -2;
+        int minScore = +2;
+
+        for(int r=1; r<=n; r++)
+        {
+            if(sel[r] != 0) continue;
+
+            sel[r] = 1;
+            sel[0] += r;
+
+            if(player == 0 && sel[0] >= t){ sel[r] = 0; sel[0]-= r; maxScore = +1; break; }
+            if(player == 1 && sel[0] >= t){ sel[r] = 0; sel[0]-= r; minScore = -1; break; }
+
+            int res = bestScore(sel, t, h, 1-player);
+
+            if(player == 0)
+            {
+                if(res > maxScore) maxScore = res;
+                if(maxScore == 1) {sel[r] = 0; sel[0]-= r; break;}
+            }
+            else
+            {
+                if(res < minScore) minScore = res;
+                if(minScore == -1) {sel[r] = 0; sel[0]-= r; break;}
+            }
+
+            
+            sel[0] -= r;
+            sel[r] = 0;
+            
+        }
+
+
+        if(player == 0)
+        {
+            h.put(Arrays.hashCode(sel), maxScore);
+            return maxScore;
+        }
+        else
+        {
+            h.put(Arrays.hashCode(sel), minScore);
+            return minScore;
+        }
+    }
+    public static boolean canIWin2(int n, int t)
     {
         State s = new State();
         for(int i=1; i<=n; i++) s.remaining.add(i);
@@ -12,14 +80,15 @@ public class CanIWinSumGame
         HashMap<State, Integer> h = new HashMap<State, Integer>();
 
         s.updateHashCode();
-        int best = bestScore(s, t, h);
+        int best = bestScore(s, t, h, -2);
+        System.out.printf("hashmap size = %d\n", h.size());
         return best == 1;
     }
 
-    private static int bestScore(State s, int t, HashMap<State, Integer> h)
+    private static int bestScore(State s, int t, HashMap<State, Integer> h, int alpha)
     {
         if(h.containsKey(s)) return h.get(s).intValue();
-        int maxScore = -2;
+        int maxScore = alpha;
         int minScore = +2;
         for(int r: s.remaining)
         {
@@ -30,21 +99,26 @@ public class CanIWinSumGame
             sNew.total += r;
 
 
-            if(s.player == 0 && sNew.total >= t) return +1;
-            if(s.player == 1 && sNew.total >= t) return -1;
+            if(s.player == 0 && sNew.total >= t) {maxScore = +1; break;}
+            if(s.player == 1 && sNew.total >= t) {minScore = -1; break;}
 
             sNew.updateHashCode();
-            int ret = bestScore(sNew, t, h);
+            int ret = bestScore(sNew, t, h, alpha);
 
             if(s.player == 0)
             {
-                maxScore = Math.max(maxScore, ret);
+                if(ret > maxScore)
+                {
+                    maxScore = ret;
+                    alpha = maxScore;
+                }
                 if(maxScore == +1) break;
             }
             else
             {
                 minScore = Math.min(minScore, ret);
                 if(minScore == -1) break;
+                if(minScore <= alpha) break;
             }
         }
 
@@ -110,17 +184,22 @@ public class CanIWinSumGame
 
     public static void main(String [] args)
     {
-        runTest(4, 4);
-        runTest(4, 5);
-        runTest(10, 11);
-        runTest(10, 15);
-        runTest(18, 79);
+        runTest(4, 15);
+        runTest(4, 10);
+        runTest(8, 35);
+        runTest(8, 64);
+        runTest(16, 79);
+        runTest(16, 35);
     }
 
     private static void runTest(int n, int t)
     {
         long st = System.currentTimeMillis();
-        System.out.printf("n = %d, t = %d, can win = %b, time taken = %d\n", 
+        System.out.printf("n = %2d, t = %3d, can win 2= %-5b, time taken = %d\n", 
+            n, t, CanIWinSumGame.canIWin2(n, t), System.currentTimeMillis()-st);
+
+        st = System.currentTimeMillis();
+        System.out.printf("n = %2d, t = %3d, can win  = %-5b, time taken = %d\n\n", 
             n, t, CanIWinSumGame.canIWin(n, t), System.currentTimeMillis()-st);
     }
 }
