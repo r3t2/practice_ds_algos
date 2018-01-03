@@ -20,6 +20,8 @@ public class NumPalindromicSubstrings
 {
     public static int countSubstrings(String s)
     {
+        if(s == null) return -1;
+
         char [] a = s.toCharArray();
         int n = a.length;
         int cnt = 0;
