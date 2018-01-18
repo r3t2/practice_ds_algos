@@ -60,11 +60,15 @@ Thus, we print  as our answer.
 public class CoinChange {
 
     static long getWays(long N, long[] coins){
+        if(coins == null) throw new NullPointerException();
+        if(coins.length == 0) return 0;
+
         HashMap<Node, Long> dp = new HashMap<Node, Long> ();
         
+        Arrays.sort(coins);
         for(long coin: coins) dp.put(new Node(N, coin), 1L);
 
-        return getWays(coins, 0, N, dp, coins[0]);
+        return getWays(coins, 0, N, dp, Long.MIN_VALUE);
 
     }
 
