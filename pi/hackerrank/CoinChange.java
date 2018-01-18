@@ -118,15 +118,23 @@ public class CoinChange {
     }
 
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int n = in.nextInt();
-        int m = in.nextInt();
-        long[] c = new long[m];
-        for(int c_i=0; c_i < m; c_i++){
-            c[c_i] = in.nextLong();
-        }
-        // Print the number of ways of making change for 'n' units using coins having the values given by 'c'
-        long ways = getWays(n, c);
-        System.out.printf("%d\n", ways);
+        // Scanner in = new Scanner(System.in);
+        // int n = in.nextInt();
+        // int m = in.nextInt();
+        // long[] c = new long[m];
+        // for(int c_i=0; c_i < m; c_i++){
+        //     c[c_i] = in.nextLong();
+        // }
+        // // Print the number of ways of making change for 'n' units using coins having the values given by 'c'
+        // long ways = getWays(n, c);
+        // System.out.printf("%d\n", ways);
+        runTest(5, new long[] {1,2,3});
+        runTest(50, new long[] {20,10,5,1});
+    }
+
+    private static void runTest(long N, long [] coins)
+    {
+        System.out.printf("N = %d, coins = %s\n", N, Arrays.toString(coins));
+        System.out.printf("number of ways = %d\n", CoinChange.getWays(N, coins));
     }
 }
