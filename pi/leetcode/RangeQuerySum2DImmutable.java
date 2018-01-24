@@ -32,6 +32,7 @@ public class RangeQuerySum2DImmutable
         this.matrix = matrix;
 
         this.nR = matrix.length;
+        if(nR == 0) return;
         this.nC = matrix[0].length;
 
         cumSum = new int[nR][nC];
@@ -68,6 +69,8 @@ public class RangeQuerySum2DImmutable
     }
     public int sumRegion(int row1, int col1, int row2, int col2)
     {
+        if(this.matrix == null) return 0;
+        
         int s2 = getCumSum(row2, col2);
         int sLeft = getCumSum(row2, col1-1);
         int sTop = getCumSum(row1-1, col2);
