@@ -16,7 +16,9 @@ public class Ch2p5SumLists
         }
 
         RetNode nRet = sum(n1, n2);
-        return nRet.node;
+        Node sumNode = nRet.node;
+        if(nRet.carry != 0) sumNode = new Node(nRet.carry, sumNode);
+        return sumNode;
     }
 
     private static RetNode sum(Node n1, Node n2)
@@ -27,7 +29,7 @@ public class Ch2p5SumLists
         int carry = (ret.carry + n1.d + n2.d)/10;
         int d = (ret.carry + n1.d + n2.d)%10;
         Node sumNode = new Node(d, ret.node);
-        return new RetNode(carry, sumNode);
+        return new RetNode(carry, sumNode); 
     }
 
     private static class RetNode
