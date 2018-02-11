@@ -1,20 +1,39 @@
 public class Ch4p5CheckBinTreeIsBST
 {
+
     public static boolean isBST(Node root)
     {
         if(root == null) throw new NullPointerException();
 
-        return isBST2(root);
+        return isBST(root, null, null);
     }
-    private static boolean isBST2(Node n)
+    private static boolean isBST(Node n, Node min, Node max)
+    {
+        if(n == null) return true;
+
+        if(min != null && !(min.key <= n.key)) return false;
+        if(max != null && !(max.key > n.key)) return false;
+
+        boolean rL = isBST(n.left, min, n);
+        boolean rR = isBST(n.right, n, max);
+
+        return rL & rR;
+    }
+    public static boolean isBSTDoesntWork(Node root)
+    {
+        if(root == null) throw new NullPointerException();
+
+        return isBST2DoesntWork(root);
+    }
+    private static boolean isBST2DoesntWork(Node n)
     {
         if(n == null) return true;
 
         if(n.left != null && !(n.key >= n.left.key)) return false;
         if(n.right != null && !(n.key < n.right.key)) return false;
 
-        boolean retLeft = isBST2(n.left);
-        boolean retRight = isBST2(n.right);
+        boolean retLeft = isBST2DoesntWork(n.left);
+        boolean retRight = isBST2DoesntWork(n.right);
 
         return retLeft & retRight;
 
@@ -24,6 +43,7 @@ public class Ch4p5CheckBinTreeIsBST
     {
         runTest(new int [] {0,1,2,3,4});
         runTest(new int [] {0,2,1,4,3});
+        runTest(new int [] {0,10,25,20,30});
     }
     private static void runTest(int [] x)
     {
@@ -35,7 +55,8 @@ public class Ch4p5CheckBinTreeIsBST
         Node x4 = new Node(x[4], null, null);
         Node x3 = new Node(x[3], x1, x4);
 
-        System.out.printf("isBST = %b\n", isBST(x3));
+        System.out.printf("isBST              = %b\n", isBST(x3));
+        System.out.printf("isBST Doesn't Work = %b\n\n", isBSTDoesntWork(x3));
     }
 
     private static class Node
