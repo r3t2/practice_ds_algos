@@ -156,6 +156,8 @@ public class Ch4p11RandomTreeNode
         r = tree.getRandomKey(); tree.delete(r); System.out.printf("delete %d\n", r);
         r = tree.getRandomKey(); tree.delete(r); System.out.printf("delete %d\n", r);
         System.out.printf("size = %d, expected = %d\n", tree.size(), N-3);
+
+        testRand(tree, N);
     }
 
     private static void testRand(Ch4p11RandomTreeNode tree, int N)
