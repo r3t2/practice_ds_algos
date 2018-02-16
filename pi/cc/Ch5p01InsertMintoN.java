@@ -3,6 +3,10 @@ public class Ch5p01InsertMintoN
     // insert M into N such that M starts at bit j and ends i (inclusive assumed)
     public static int insertBits(int M, int N, int j, int i)
     {
+        if(i < j) throw new IllegalArgumentException();
+        if(i < 0 || i > 31) throw new IllegalArgumentException();
+        if(j < 0 || j > 31) throw new IllegalArgumentException();
+        
         System.out.printf("-1 <<  j+1 =%02d = %s\n", j+1, intToBin((-1<<j+1)));
         System.out.printf("-1 >>> 32-i=%02d = %s\n", 32-i, intToBin((-1>>>(32-i))));
         int clear_mask_low = i==0?0:(-1 >>> (32-i)); // this is because the shift amount is truncated to 5 bits (or modulo 32).

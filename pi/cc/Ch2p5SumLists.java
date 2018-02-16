@@ -18,7 +18,7 @@ public class Ch2p5SumLists
         RetNode nRet = sum(n1, n2);
         Node sumNode = nRet.node;
         if(nRet.carry != 0) sumNode = new Node(nRet.carry, sumNode);
-        return sumNode;
+        return sumNode; 
     }
 
     private static RetNode sum(Node n1, Node n2)
