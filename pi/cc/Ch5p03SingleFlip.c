@@ -48,11 +48,42 @@ int singleFlip(int x)
     return maxCnt;
 }
 
+int singleFlipOpt(int x)
+{
+    int maxCnt = 0;
+    int numConsOnes = 0;
+    int numMergedConsOnes = 0;
+
+    int i, b;
+    for(i=0; i<32; i++)
+    {
+        b = bit(x, i);
+        if(b == 0)
+        {
+            numMergedConsOnes = numConsOnes + 1;
+            numConsOnes = 0;
+        }
+        else
+        {
+            numMergedConsOnes += 1;
+            numConsOnes += 1;
+        }
+
+        if(maxCnt < numMergedConsOnes)
+        {
+            maxCnt = numMergedConsOnes;
+        }
+    }
+
+    return maxCnt;
+}
+
 
 void runTest(unsigned int x)
 {
     printf("input = %08x", x);
-    printf(" , consecutive ones after single flip = %d\n", singleFlip(x));
+    printf(" , consecutive ones after single flip = %02d, opt = %02d, \n", 
+        singleFlip(x), singleFlipOpt(x));
 }
 
 
